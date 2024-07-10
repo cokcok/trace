@@ -1,0 +1,41 @@
+<ion-content>
+   <div class="main">
+   <p><img src="assets/imgs/logo1.png" class="logo" width="50" height="50"></p> 
+    <p class="sign" >นำเข้าข้อมูล Trace</p>
+    <form class="formmain" [formGroup]="ionicForm"  (ngSubmit)="submitForm()" novalidate >
+      <ion-item lines="full" class="un">
+        <ion-label class="showlabel"  position="floating">วัน/เวลา</ion-label>
+        <ion-input  formControlName="server_time" type="text" readonly></ion-input>
+        <span class="error" *ngIf="isSubmitted && errorControl.server_time.errors?.required">
+          กรุณาระบุ Username
+        </span>
+      </ion-item>
+      <ion-item lines="full" class="un">
+        <ion-label class="showlabel"  position="floating">Username</ion-label>
+        <ion-input  formControlName="username" type="text" ></ion-input>
+        <span class="error" *ngIf="isSubmitted && errorControl.username.errors?.required">
+          กรุณาระบุ Username
+        </span>
+      </ion-item>
+      <ion-item lines="full" class="pass">
+        <ion-label class="showlabel"  position="floating">Password</ion-label>
+        <ion-input  formControlName="password" type="password"  ></ion-input>
+        <span  class="error" *ngIf="isSubmitted && errorControl.password.errors?.required">
+          กรุณาระบุ Password
+        </span>
+      </ion-item>
+      
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" color="secondary" expand="block">เข้าสู่ระบบ</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+   
+
+ 
+    <ion-row  >
+        <ion-label class="appversion"> App Version : {{versionNumber}} </ion-label>
+    </ion-row>
+  </div> 
+</ion-content>

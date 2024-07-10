@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController, NavController,AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators,FormControl,FormArray  } from '@angular/forms';
-
 import { Subscription } from 'rxjs';
 import { RwaConfigService } from '../sv/rwa-config.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
