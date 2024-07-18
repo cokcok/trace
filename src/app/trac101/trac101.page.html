@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+     </ion-buttons>
+    <ion-title>ระบุผู้ค้า</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <tabset>
+  <tab heading="แบบฟอร์ม" id="tab1">
+    <form [formGroup]="ionicForm" novalidate>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">ชื่อผู้ค้า</ion-label>
+              <ion-input formControlName="merchantname" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl.merchantname.errors?.required">
+                กรุณาระบุ ชื่อผู้ค้า
+              </span>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">เลขทะเบียนเกษตรกร</ion-label>
+              <ion-input formControlName="appno" type="text"></ion-input>
+             
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">ชื่อผู้ดำเนินงาน</ion-label>
+              <ion-input formControlName="operatorname" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl.operatorname.errors?.required">
+                กรุณาระบุ ชื่อผู้ดำเนินงาน
+              </span>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">เลขบัตรปชช.</ion-label>
+              <ion-input formControlName="operatorname_idcard" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl.operatorname_idcard.errors?.required">
+                กรุณาระบุ เลขบัตรปชช
+              </span>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">เบอร์ติดต่อ</ion-label>
+              <ion-input formControlName="operatorname_tel" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl.operatorname_tel.errors?.required">
+                กรุณาระบุ เบอร์ติดต่อ
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">บ้านเลขที่ หมู่</ion-label>
+              <ion-input formControlName="place_rubber" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl.place_rubber.errors?.required">
+                กรุณาระบุ บ้านเลขที่ หมู่
+              </span>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="place_rubber1"
+              [dataProvider]="placeSv"></ion-auto-complete>
+            <span class="error" *ngIf="isSubmitted && errorControl.place_rubber1.errors?.required">
+              กรุณาระบุ สถานที่ตั้ง
+            </span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <input type="file" (change)="onFileChange($event)" (click)="onInputClick($event)"  multiple="false" />
+            <br>
+          <!--   <div id="htmlerr" style="overflow-x:auto;"></div> -->
+            <div id="htmlerr"></div>
+            <div id="htmlout" style="overflow-x:auto;"></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </tab>
+
+ 
+</tabset>  
+  
+
+   
+ 
+</ion-content>

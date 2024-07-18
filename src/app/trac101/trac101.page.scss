@@ -1,0 +1,25 @@
+#gfg{ 
+	margin: 10px; 
+}
+
+div #htmlout table {
+//overflow-x:auto;
+	width: 100%;
+}
+div #htmlout table,th, td {
+
+	text-align: left;
+	padding: 8px;
+
+}
+
+div #htmlerr  {
+//overflow-x:auto;
+	padding: 8px;
+	width: 100%;
+	color: red;
+}
+
+ion-auto-complete {
+	width: 50vw;
+  }

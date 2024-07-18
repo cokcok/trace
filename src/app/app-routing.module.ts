@@ -18,7 +18,20 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'main',
+    loadChildren: () => import('./main/main.module').then( m => m.MainPageModule)
+  },
+  {
+    path: 'trac101',
+    loadChildren: () => import('./trac101/trac101.module').then( m => m.Trac101PageModule)
+  },
+  {
+    path: 'trac102/:trace1_id',
+    loadChildren: () => import('./trac102/trac102.module').then( m => m.Trac102PageModule)
   }
+
 ];
 
 @NgModule({

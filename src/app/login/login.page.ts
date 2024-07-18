@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController, NavController,AlertController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators,FormControl,FormArray  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import * as moment_ from 'moment';
 import 'moment/locale/th';
+import { ConfigService } from '../sv/config.service';
+
 const moment = moment_;
 @Component({
   selector: 'app-login',
-  templateUrl: './login.page.html',
+  templateUrl: './login.page.html', 
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
   ionicForm: FormGroup; sub: Subscription;
-  isSubmitted = false; vlat: any; vlon: any; vplf: any; vdevice: any;
-  versionNumber: string | number;checktype:any;
-  constructor(public formBuilder: FormBuilder, public menuCtrl: MenuController) { }
+  isSubmitted = false; 
+  versionNumber: string | number;
+  constructor(public formBuilder: FormBuilder, public menuCtrl: MenuController,public configSv:ConfigService,private navCtrl: NavController) { }
 
   ngOnInit() {
     //this.portControl_checktype = this.formBuilder.control("", Validators.required);
@@ -37,7 +39,7 @@ export class LoginPage implements OnInit {
    
     for (let i = 0; i < aux.length; i++) {
       if (aux[i].name === 'version') {
-        //this.versionNumber = aux[i].content;
+        this.versionNumber = aux[i].content;
       }
     }
     //this.loaddept();
@@ -45,5 +47,11 @@ export class LoginPage implements OnInit {
  
   GetDateTime() {
     this.ionicForm.controls["server_time"].setValue(moment().format('DD/MM/YYYY H:mm:ss'));
+  }
+
+  submitForm() {
+    //console.log('a');
+    //this.configSv.loadingAlert(2000);
+    this.navCtrl.navigateForward('/main');
   }
 }
