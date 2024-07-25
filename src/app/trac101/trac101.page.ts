@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController,AlertController } from '@ionic/angular';
+import { MenuController, NavController,AlertController, LoadingController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators,FormControl,FormArray  } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
@@ -9,6 +9,7 @@ import { PlaceService } from '../sv/place.service';
 import { ConfigService } from '../sv/config.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-trac101',
   templateUrl: './trac101.page.html',
@@ -16,18 +17,18 @@ import { Router } from '@angular/router';
 })
 export class Trac101Page implements OnInit {
   ionicForm: FormGroup; sub: Subscription;
-  tmpdata = [];
-  constructor(public formBuilder: FormBuilder, private alertCtrl: AlertController, private tracSv: Trac1Service,private mtdSv: MtdService,public placeSv:PlaceService,public configSv:ConfigService,private navCtrl: NavController,private router: Router) { }
+  tmpdata = [];isSubmitted = false;
+  constructor(public formBuilder: FormBuilder, private alertCtrl: AlertController, private tracSv: Trac1Service,public placeSv:PlaceService,public configSv:ConfigService,private navCtrl: NavController,private router: Router,private loadingController: LoadingController) { }
  //, public placeSv: PlaceSvService, private modalCtrl: ModalController
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      merchantname: ['', [Validators.required]],
-      appno: [''],
-      operatorname: ['', [Validators.required]],
-      operatorname_idcard: ['', [Validators.required]],
-      operatorname_tel : ['', [Validators.required]],
-      place_rubber : ['', [Validators.required]],
-      place_rubber1 : ['', [Validators.required]],
+      merchantname: ['5', [Validators.required]],
+      appno: ['5'],
+      operatorname: ['5', [Validators.required]],
+      operatorname_idcard: ['5', [Validators.required]],
+      operatorname_tel : ['5', [Validators.required]],
+      place_rubber : ['5', [Validators.required]],
+      place_rubber1 : ['5', [Validators.required]],
       tmpdata: ["", [Validators.required]],
       empid: [this.configSv.emp_id],
       dept_code : [this.configSv.dept_code],
@@ -35,6 +36,11 @@ export class Trac101Page implements OnInit {
       
     });
   }
+
+  get errorControl() {
+    return this.ionicForm.controls;
+  }
+
 
   onInputClick(event) {
     event.target.value = '';
@@ -47,6 +53,7 @@ export class Trac101Page implements OnInit {
     //console.log(file);
     if (typeof file !== 'undefined') {
       var HTMLOUT = document.getElementById('htmlout');
+      var xlsxcount = document.getElementById('xlsxcount');
       const target: DataTransfer = <DataTransfer>(evt.target);
       if (target.files.length !== 1) throw new Error('Cannot use multiple files');
       const reader: FileReader = new FileReader();
@@ -61,7 +68,8 @@ export class Trac101Page implements OnInit {
 
         /* save data */
         this.tmpdata = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        //console.log(this.data,this.data.length);
+        //console.log(this.tmpdata,this.tmpdata.length);
+        xlsxcount.innerHTML = "มีข้อมูลนำเข้า จำนวน " + (this.tmpdata.length-1) + " รายการ";
         HTMLOUT.innerHTML = "";
         wb.SheetNames.forEach(function (sheetName) {
           var htmlstr = XLSX.write(wb, { sheet: sheetName, type: 'string', bookType: 'html' });
@@ -71,6 +79,8 @@ export class Trac101Page implements OnInit {
       };
       //reader.readAsBinaryString(target.files[0]);
       reader.readAsArrayBuffer(target.files[0]);
+      //xlxscout.innerText = " มีข้อมูลนำเข้าจำนวน "  this.tmpdata.length-2 
+     
       evt.value = ''; file.value = '';
 
 
@@ -78,48 +88,112 @@ export class Trac101Page implements OnInit {
   }
 
 
-  async submitForm(){
-    //console.log(this.tmpdata);
-    this.ionicForm.controls['tmpdata'].setValue(this.tmpdata);
-    this.ionicForm.controls['type_sql'].setValue('insert');
-    //this.ionicForm.controls['empid'].setValue(this.configSv.emp_id);
-
-
-    console.log(this.ionicForm.value);
-    
-    // this.sub = this.tracSv
-    //   .crudtrac1(this.ionicForm.value, 'insert')
-    //   .subscribe(async  (data_check) => {
-      
-    //   } ,
-    //   (error) => {
-    //     console.log(JSON.stringify(error));
-    //   },
-    //   () => {});
-
-
+    async  submitForm(){
       //this.isSubmitted = true;
-      if (!this.ionicForm.valid) {
-        console.log("Please provide all the required values!");
-        return false;
-      } else {
-        this.sub = this.tracSv
-        .crudtrac1(this.ionicForm.value,'insert')
-        .subscribe((data) => {
-          
-          this.router.navigateByUrl('/trac102/'+ data.id);
-          //console.log(data);
-          // if (dataplace !== null) {
-          //   this.configSv.ChkformAlert(dataplace.message);
-          // }
-          // this.navCtrl.navigateForward(['/trac102', {
-          //   trace1_id: data.id,
-           
-          //   }]);
-         });
-      }  
+      this.ionicForm.controls['tmpdata'].setValue(this.tmpdata);
+       this.ionicForm.controls['type_sql'].setValue('insert');
+      await this.loadingController.create({
+        message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่'
+      }).then((loading) => {
+  
+        loading.present();
 
+        // if (!this.ionicForm.valid) {
+        //   console.log("Please provide all the required values!");
+        //   loading.dismiss();
+        //   return false;
+          
+        // } else {
+          
+          this.sub = this.tracSv
+          .crudtrac1(this.ionicForm.value,'insert')
+          .subscribe((data) => {
+            if(data.status === 'ok')
+            {
+              loading.dismiss();
+              //this.router.navigateByUrl('/trac102/'+ data.id + '/'+ this.ionicForm.value);
+              // this.router.navigate(['/trac102/'+ data.id], {
+              //   skipLocationChange: true,
+              // });
+              this.navCtrl.navigateForward(['/trac102'],{
+                queryParams: {
+                  //  value : JSON.stringify(this.data.filter(function (val) { return val.id == id;})),
+                  //  xxx :'aaa',
+                  trace1_id : data.id,
+                  merchantname: this.ionicForm.controls['merchantname'].value
+                  } //,skipLocationChange:true
+                });
+        
+
+            }
+            else
+            {
+              this.configSv.ChkformAlert(data.status);
+              loading.dismiss();
+            }
+         
+            // this.navCtrl.navigateForward(['/trac102', {
+            //   trace1_id: data.id,
+             
+            //   }]);
+           });
+        //} 
+        //loading.dismiss();
+      });
+      
     }
+
+    
+   
+
 }
 
 
+
+  // async submitForm(){
+    //   this.isSubmitted = true;
+    // //console.log(this.tmpdata);
+    // this.ionicForm.controls['tmpdata'].setValue(this.tmpdata);
+    // this.ionicForm.controls['type_sql'].setValue('insert');
+    // //this.ionicForm.controls['empid'].setValue(this.configSv.emp_id);
+
+
+    // console.log(this.ionicForm.value);
+    
+    // // this.sub = this.tracSv
+    // //   .crudtrac1(this.ionicForm.value, 'insert')
+    // //   .subscribe(async  (data_check) => {
+      
+    // //   } ,
+    // //   (error) => {
+    // //     console.log(JSON.stringify(error));
+    // //   },
+    // //   () => {});
+
+
+    //   //this.isSubmitted = true;
+    //   if (!this.ionicForm.valid) {
+    //     console.log("Please provide all the required values!");
+    //     return false;
+    //   } else {
+    //    // this.configSv.loadingAlert(3000);
+    //     this.sub = this.tracSv
+    //     .crudtrac1(this.ionicForm.value,'insert')
+    //     .subscribe((data) => {
+    //       if(data.status === 'ok')
+    //       {
+    //         this.router.navigateByUrl('/trac102/'+ data.id);
+    //       }
+    //       else
+    //       {
+    //         this.configSv.ChkformAlert(data.status);
+    //       }
+       
+    //       // this.navCtrl.navigateForward(['/trac102', {
+    //       //   trace1_id: data.id,
+           
+    //       //   }]);
+    //      });
+    //   }  
+
+    // }

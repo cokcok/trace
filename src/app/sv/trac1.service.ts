@@ -20,5 +20,15 @@ export class Trac1Service {
     //let data;  
     return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
   }
+
+  gettrac1_read(type, trac1_id): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'trac1_read.php';
+    const data = {
+      type_sql: type,
+      trac1_id: trac1_id,
+    };
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
 }
  

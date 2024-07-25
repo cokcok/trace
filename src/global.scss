@@ -25,3 +25,50 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 @import "~ionic4-auto-complete/auto-complete";
+
+.error{
+    //text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+    color: #ff0000;
+    //text-align: center;
+    //padding-top: 15px;
+    display:table;
+    //margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.my-custom-modal-css .modal-wrapper {
+    height: 20%;
+    top: 80%;
+    position: absolute; 
+    display: block;  
+ }
+
+ @media only screen and (orientation: landscape)  {
+    .my-modal {
+     .modal-wrapper {
+       position: absolute;
+       top: 0 !important;
+       left: 0 !important;
+       display: block;
+       width: 100% !important;
+       height: 100% !important;
+     } 
+   }
+}
+
+.showlabel{
+  color: #1624ec!important;
+}
+
+.showlabelheader{
+  color: #e00df3!important;
+}
+
+.showlabelheader1{
+  color: #1cbe72!important;
+}
+
+.showlabelheader2{
+  color: #0bc7ce!important;
+}

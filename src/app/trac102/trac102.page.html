@@ -3,10 +3,73 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
      </ion-buttons>
-    <ion-title>ประมวลผล trac 1  id : {{trac1_id}}</ion-title>
+    <ion-title>ประมวลผล  {{ merchantname }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
+      <ion-item>
+        <ion-row>
+          <!-- <ion-col>
+            <ion-label class="showlabelheader"> {{ c.appno }}  {{ c.seller_name }}   </ion-label>
+          </ion-col> -->
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.appno }} {{ c.seller_name }} </h3>
+            </ion-text>
+             <p> {{ c.seller_idc }} </p>
+          </ion-label>
+          
+        </ion-row>
+        <!-- <ion-button fill="outline" slot="end" color="success" (click)="View(c.id)">ดูรายละเอียดลำดับที่ {{i+1}}</ion-button> -->
+      </ion-item>
+      
+      <ion-item>
+        <ion-grid fixed>
+          <!-- <ion-row>
+            <ion-col>
+              <ion-label> <u class="showlabel">GID :</u> {{ c.gid }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label><u class="showlabel"> ประเภทเอกสารสิทธิ์:</u>  {{ c.ld_type }}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label><u class="showlabel">เลขที่ :</u>  {{ c.ld_id }}</ion-label>
+            </ion-col>
 
+          </ion-row> -->
+          <div *ngIf="c.detail_land?.length > 0">
+            <ion-row *ngFor="let cc of c.detail_land;let ii = index;">
+              <ion-col  size="auto" *ngIf="cc.gid != null"><u class="showlabelheader">GID</u> {{cc.gid}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.ld_type != null"><u class="showlabelheader">ประเภทเอกสารสิทธิ์</u> {{cc.ld_type}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.ld_type != null"><u class="showlabelheader">เลขที่</u> {{cc.ld_id}}</ion-col>
+              <!-- <ion-col  size="auto" *ngIf="cc.product_name != null"> {{cc.product_name}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.size != null"><u class="showlabelheader">ขนาด</u> {{cc.size}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.podetail_number != null"><u class="showlabel">เบอร์:</u> {{cc.podetail_number}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.color_front != null"><u class="showlabel">ด้านหน้าสี:</u> {{cc.color_front}}</ion-col>
+              <ion-col  size="auto" *ngIf="cc.color_back != null"><u class="showlabel">ด้านหลังสี:</u> {{cc.color_back}}</ion-col>
+              <ion-col *ngIf="cc.product_other != null">
+                <ion-col> <u class="showlabel">สินค้าอื่น :</u> {{cc.product_other}}</ion-col>
+              </ion-col>
+              <ion-col *ngIf="cc.product_flg  != ''">
+                <ion-col> <u class="showlabel">หมายเหตุ :</u> {{cc.product_flg}}</ion-col>
+              </ion-col> -->
+            </ion-row>
+          </div>
+        </ion-grid>
+
+
+      </ion-item>
+    </ion-card>
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+  </div>
 </ion-content>
