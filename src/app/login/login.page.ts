@@ -16,11 +16,14 @@ export class LoginPage implements OnInit {
   ionicForm: FormGroup; sub: Subscription;
   isSubmitted = false; 
   versionNumber: string | number;
-  constructor(public formBuilder: FormBuilder, public menuCtrl: MenuController,public configSv:ConfigService,private navCtrl: NavController) { }
+  constructor(public formBuilder: FormBuilder, public menuCtrl: MenuController,public configSv:ConfigService,private navCtrl: NavController) {
+    this.menuCtrl.enable(false);
+   }
 
   ngOnInit() {
     //this.portControl_checktype = this.formBuilder.control("", Validators.required);
     //this.portControl_dept = this.formBuilder.control("");
+    this.menuCtrl.enable(false);
     this.ionicForm = this.formBuilder.group({
       server_time: ["", [Validators.required]],
       username: ['', [Validators.required]],
@@ -53,5 +56,9 @@ export class LoginPage implements OnInit {
     //console.log('a');
     //this.configSv.loadingAlert(2000);
     this.navCtrl.navigateForward('/main');
+  }
+
+  get errorControl() {
+    return this.ionicForm.controls;
   }
 }

@@ -15,7 +15,7 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the
 import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
 import { IonicSelectableModule } from 'ionic-selectable';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-
+import { AutoCompleteModule } from 'ionic4-auto-complete';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +25,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     // Register the ServiceWorker as soon as the app is stable
     // or after 30 seconds (whichever comes first).
     registrationStrategy: 'registerWhenStable:30000'
-  }), HttpClientModule, MomentModule,NgIdleKeepaliveModule.forRoot(),IonicSelectableModule],
+  }), HttpClientModule, MomentModule,NgIdleKeepaliveModule.forRoot(),IonicSelectableModule,AutoCompleteModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Geolocation, Device, NetworkInterface, DeviceDetectorService,InAppBrowser],
   bootstrap: [AppComponent],
 })

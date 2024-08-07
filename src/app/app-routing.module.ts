@@ -30,7 +30,19 @@ const routes: Routes = [
   {
     path: 'trac102', //:trace1_data
     loadChildren: () => import('./trac102/trac102.module').then( m => m.Trac102PageModule)
+  },  {
+    path: 'trac103',
+    loadChildren: () => import('./trac103/trac103.module').then( m => m.Trac103PageModule)
+  },
+  {
+    path: 'trac104',
+    loadChildren: () => import('./trac104/trac104.module').then( m => m.Trac104PageModule)
+  },
+  {
+    path: 'trac105',
+    loadChildren: () => import('./trac105/trac105.module').then( m => m.Trac105PageModule)
   }
+
 
 ];
 

@@ -1,0 +1,356 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    </ion-buttons> 
+    <ion-title>ประเมิน {{item['ld_type']}} {{item['ld_id']}} <span  [ngClass]=" (ionicForm.controls['risk'].value === 0) ? 'risk0' : 'risk1' "> {{ ionicForm.controls['risktext'].value }}</span>
+    </ion-title>
+    <ion-buttons slot="primary" >
+      <!-- *ngIf="ionicForm.controls['estimate'].value == true" -->
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+  <form [formGroup]="ionicForm" novalidate>
+   
+  <tabset>
+    <tab heading="ข้อมูลแปลง" id="tab1">
+      <ion-grid fixed>
+        <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">ประเภทเอกสารสิทธิ์</ion-label>
+                <ion-input formControlName="ld_type" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เลขที่แปลง</ion-label>
+                <ion-input formControlName="ld_id" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-label class="showlabel" position="floating">เนื้อที่ (ha)</ion-label>
+                <ion-input formControlName="area_ha" type="text"></ion-input>
+              </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row> 
+            
+            
+        </ion-row>
+        <ion-row> 
+         
+      </ion-row>
+      <ion-row> 
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ปริมาณผลผลิตทั้งหมด (กก./ปี)</ion-label>
+            <ion-input formControlName="product_qty" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row> 
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">รูปแบบจำหน่ายผลผลิต</ion-label>
+            <ion-input formControlName="product" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+    </tab>
+    <tab heading="การประเมิน" id="tab2">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-checkbox  color="dark"    formControlName="selected_land" slot="start"> </ion-checkbox>นำเข้า trace 3
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-checkbox  color="dark"    formControlName="consentform" slot="start"> </ion-checkbox>การขอเข้าถึงข้อมูลส่วนบุคคล เอกสารแสดงความยินยอม (Consent Form)
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && errorControl.consentform.errors?.required">
+              กรุณาระบุ Consent Form
+            </span>
+          </ion-col> 
+        
+        </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <!-- <ion-checkbox  color="dark"    formControlName="estimate" slot="start"> </ion-checkbox> -->
+            <!-- <ion-radio-group value="custom-checked">
+              <ion-radio value="custom" aria-label="Custom checkbox"></ion-radio>
+              <ion-radio value="custom-checked" aria-label="Custom checkbox that is checked"></ion-radio>
+              1. พื้นที่ปลูกมีการตัดไม้ทำลายป่า หลังวันที่ 31 ธันวาคม 2563 
+            </ion-radio-group> -->
+            <ion-list>
+              <ion-radio-group  formControlName="ac1" value="default" (ionChange)="radioGroupChange($event)" >
+                <ion-list-header> 
+                   <!-- (ionChange)="radioGroupChange($event)" -->
+                  <ion-label>1. พื้นที่ปลูกมีการตัดไม้ทำลายป่า หลังวันที่ 31 ธันวาคม 2563 </ion-label>
+                </ion-list-header>           
+                <ion-item>
+                  <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                  <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+                </ion-item>           
+                <ion-item>
+                  <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                  <ion-radio slot="start" value="1" color="primary"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac1.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 1
+              </span>
+            </ion-list>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-list>
+              <ion-radio-group  formControlName="ac2" value="default" (ionChange)="radioGroupChange($event)" >
+                <ion-list-header> 
+                  <ion-label>2. ไม่มีการชำระภาษี ค่าธรรมเนียมอย่างถูกต้องตามกฎหมาย</ion-label>
+                </ion-list-header>           
+                <ion-item>
+                  <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                  <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+                </ion-item>           
+                <ion-item>
+                  <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                  <ion-radio slot="start" value="1" color="primary"></ion-radio>
+                </ion-item>
+                <span class="error" *ngIf="isSubmitted && errorControl.ac2.errors?.required">
+                  กรุณาระบุ ความเสี่ยงที่ 2
+                </span>
+              </ion-radio-group>
+            </ion-list>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-list>
+              <ion-radio-group  formControlName="ac3" value="default" (ionChange)="radioGroupChange($event)">
+                <ion-list-header> 
+                  <ion-label>3. พบการบุกรุกพื้นที่ป่าสงวน/ป่าธรรมชาติ/ป่าอนุรักษ์     
+                    </ion-label>
+                </ion-list-header>           
+                <ion-item>
+                  <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                  <ion-radio slot="start" value="0" color="danger"></ion-radio>
+                </ion-item>           
+                <ion-item>
+                  <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                  <ion-radio slot="start" value="1" color="primary"></ion-radio>
+                </ion-item>
+                <span class="error" *ngIf="isSubmitted && errorControl.ac3.errors?.required">
+                  กรุณาระบุ ความเสี่ยงที่ 3
+                </span>
+              </ion-radio-group>
+            </ion-list>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-list>
+              <ion-radio-group  formControlName="ac4" value="default" (ionChange)="radioGroupChange($event)">
+                <ion-list-header> 
+                  <ion-label>4. พบการใช้แรงงานเด็ก (อายุต่ำกว่า 18 ปี) </ion-label>
+                </ion-list-header>           
+                <ion-item>
+                  <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                  <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+                </ion-item>           
+                <ion-item>
+                  <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                  <ion-radio slot="start" value="1" color="primary"></ion-radio>
+                </ion-item>
+                <span class="error" *ngIf="isSubmitted && errorControl.ac4.errors?.required">
+                  กรุณาระบุ ความเสี่ยงที่ 4
+                </span>
+              </ion-radio-group>
+            </ion-list>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac5" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>5.มีการจ้างแรงงานอย่างผิดกฎหมาย    
+                  </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac5.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 5
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac6" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>6. จ่ายค่าจ้างต่ำกว่ากฎหมายกำหนด </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac6.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 6
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac7" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>7. มีการละเมิดสิทธิมนุษยชน    
+                  </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac7.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 7
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac8" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>8. มีการปลอมปนผลผลิตจากแปลงอื่น (ผลผลิตเกินความเป็นจริง)     
+                  </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac8.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 8
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac9" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>9. มีความขัดแย้งเรื่องการถือครองที่ดินกับกลุ่มชนเผ่าพื้นเมืองหรือสมาชิกในชุมชนท้องถิ่น   
+                  </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac9.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 9
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac10" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>10. ละเมิดกฎข้อบังคับด้านสิ่งแวดล้อมตั้งแต่หนึ่งข้อขึ้นไป  (ความลาดชัน สารเคมีต้องห้าม ฯลฯ) </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac10.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 10
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-list>
+            <ion-radio-group  formControlName="ac11" value="default" (ionChange)="radioGroupChange($event)">
+              <ion-list-header> 
+                <ion-label>11. เกษตรกรไม่ยินยอมเปิดเผยข้อมูลเพื่อการดำเนินการตามขั้นตอนของ EUDR </ion-label>
+              </ion-list-header>           
+              <ion-item>
+                <ion-label  color="danger">พบความเสี่ยง</ion-label>
+                <ion-radio  slot="start" value="0" color="danger"></ion-radio>
+              </ion-item>           
+              <ion-item>
+                <ion-label color="primary">ไม่พบความเสี่ยง</ion-label>
+                <ion-radio slot="start" value="1" color="primary"></ion-radio>
+              </ion-item>
+              <span class="error" *ngIf="isSubmitted && errorControl.ac11.errors?.required">
+                กรุณาระบุ ความเสี่ยงที่ 11
+              </span>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    </ion-grid>
+    </tab>
+  </tabset>
+</form>
+</ion-content>

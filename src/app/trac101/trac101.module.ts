@@ -6,12 +6,14 @@ import { Trac101PageRoutingModule } from './trac101-routing.module';
 import { Trac101Page } from './trac101.page';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AutoCompleteModule } from 'ionic4-auto-complete';
+import { IonicSelectableModule } from 'ionic-selectable';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    Trac101PageRoutingModule,ReactiveFormsModule, TabsModule.forRoot(),AutoCompleteModule
+    Trac101PageRoutingModule,ReactiveFormsModule, TabsModule.forRoot(),AutoCompleteModule,
+    IonicSelectableModule
   ],
   declarations: [Trac101Page]
 })

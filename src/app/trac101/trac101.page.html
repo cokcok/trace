@@ -17,7 +17,37 @@
   <tab heading="แบบฟอร์ม" id="tab1">
     <form [formGroup]="ionicForm" novalidate>
       <ion-grid fixed>
-        <ion-row>
+        <ion-row> 
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">สำนักงานตลาดยางพารา</ion-label>
+              <ion-input formControlName="rubbermarket" type="text"></ion-input>
+              <span class="error" *ngIf="isSubmitted && errorControl.rubbermarket.errors?.required">
+                กรุณาระบุ สำนักงานตลาดยางพารา
+              </span>
+            </ion-item>
+          </ion-col>
+          <ion-col >
+            <ion-item>
+              <ion-label  class="showlabel" position="floating">รูปแบบผลผลิต</ion-label>
+              <ionic-selectable
+                interface="popover"                 
+                formControlName="mtdproduct_id"
+                itemValueField="id"
+                itemTextField="name"
+                [items]="ports_product"              
+                [canSearch]="true"
+               
+                closeButtonText="ยกเลิก"
+                >
+              </ionic-selectable>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && errorControl.syssubmenu_id.errors?.required">
+              กรุณาระบุ การเชื่อมโยง
+            </span>
+          </ion-col>
+        </ion-row>
+        <ion-row> 
           <ion-col>
             <ion-item>
               <ion-label class="showlabel" position="floating">ชื่อผู้ค้า</ion-label>
@@ -74,14 +104,14 @@
               </span>
             </ion-item>
           </ion-col>
-        </ion-row>
+        </ion-row> 
         <ion-row>
           <ion-col>
-            <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" formControlName="place_rubber1"
-              [dataProvider]="placeSv"></ion-auto-complete>
+            <ion-auto-complete class="showlabel" [labelPosition]="'floating'" [label]="'สถานที่ตั้ง (แขวง/ตำบล เขต/อำเภอ จังหวัด รหัสไปรษณีย์)'" 
+              [dataProvider]="placeSv" formControlName="place_rubber1"></ion-auto-complete>
             <span class="error" *ngIf="isSubmitted && errorControl.place_rubber1.errors?.required">
               กรุณาระบุ สถานที่ตั้ง
-            </span>
+            </span> 
           </ion-col>
         </ion-row>
         <ion-row>

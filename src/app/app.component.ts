@@ -17,7 +17,8 @@ export class AppComponent {
   // ];
   public appPages = [
     { title: 'ประชาสัมพันธ์', url: '/main', icon: 'mail' },
-    { title: 'Trac1', url: '/trac101', icon: 'mail' },
+    { title: 'Trac1-นำเข้าข้อมูล', url: '/trac101', icon: 'mail' },
+    { title: 'ข้อมูล Trac1-2 ที่นำเข้า', url: '/trac105', icon: 'mail' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor(public configSv: RwaConfigService) {

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, NavController,AlertController, LoadingController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators,FormControl,FormArray  } from '@angular/forms';
+import {  NavController,AlertController, LoadingController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators,FormControl  } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { Trac1Service } from '../sv/trac1.service';
 import { MtdService } from '../sv/mtd.service';
 import { PlaceService } from '../sv/place.service';
 import { ConfigService } from '../sv/config.service';
-import { ActivatedRoute } from '@angular/router';
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,11 +17,14 @@ import { Router } from '@angular/router';
 })
 export class Trac101Page implements OnInit {
   ionicForm: FormGroup; sub: Subscription;
+  portControl_product: FormControl;ports_product: any;
   tmpdata = [];isSubmitted = false;
-  constructor(public formBuilder: FormBuilder, private alertCtrl: AlertController, private tracSv: Trac1Service,public placeSv:PlaceService,public configSv:ConfigService,private navCtrl: NavController,private router: Router,private loadingController: LoadingController) { }
- //, public placeSv: PlaceSvService, private modalCtrl: ModalController
+  constructor(public formBuilder: FormBuilder, private alertCtrl: AlertController, private tracSv: Trac1Service,public placeSv:PlaceService,public configSv:ConfigService,private navCtrl: NavController,private router: Router,private loadingController: LoadingController, public mtdSv: MtdService) { }
+
   ngOnInit() {
+    this.portControl_product = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
+      rubbermarket: ['สำนักงานตลาดยางพารา.....', [Validators.required]],
       merchantname: ['5', [Validators.required]],
       appno: ['5'],
       operatorname: ['5', [Validators.required]],
@@ -29,12 +32,14 @@ export class Trac101Page implements OnInit {
       operatorname_tel : ['5', [Validators.required]],
       place_rubber : ['5', [Validators.required]],
       place_rubber1 : ['5', [Validators.required]],
+      mtdproduct_id :  this.portControl_product,
       tmpdata: ["", [Validators.required]],
       empid: [this.configSv.emp_id],
       dept_code : [this.configSv.dept_code],
       type_sql: [""],
       
     });
+    this.loaddata_product(0);
   }
 
   get errorControl() {
@@ -87,6 +92,20 @@ export class Trac101Page implements OnInit {
     }
   }
 
+  loaddata_product(padding: number, infiniteScroll?) {
+    this.sub = this.mtdSv
+      .getmtd(0, padding)
+      .subscribe((data) => {
+        if (data !== null) {
+          this.ports_product = data.data_detail.map((item) => Object.assign({}, item));
+          //const item = this.ports_product.filter((val) => val.id === this.configSv.emp_id)[0];
+          // console.log(item);
+         // this.portControl_sale.setValue(item);
+        }
+      });
+
+  }
+
 
     async  submitForm(){
       //this.isSubmitted = true;
@@ -98,12 +117,12 @@ export class Trac101Page implements OnInit {
   
         loading.present();
 
-        // if (!this.ionicForm.valid) {
-        //   console.log("Please provide all the required values!");
-        //   loading.dismiss();
-        //   return false;
+        if (!this.ionicForm.valid) {
+          console.log("Please provide all the required values!");
+          loading.dismiss();
+          return false;
           
-        // } else {
+        } else {
           
           this.sub = this.tracSv
           .crudtrac1(this.ionicForm.value,'insert')
@@ -137,8 +156,8 @@ export class Trac101Page implements OnInit {
              
             //   }]);
            });
-        //} 
-        //loading.dismiss();
+        } 
+        loading.dismiss();
       });
       
     }

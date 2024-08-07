@@ -20,6 +20,12 @@ export class Trac1Service {
     //let data;  
     return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
   }
+  crudtrac1_risk(vdata: any, type?: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'trac1_risk.php';   
+    //let data;  
+    return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
+  }
 
   gettrac1_read(type, trac1_id): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
@@ -27,6 +33,17 @@ export class Trac1Service {
     const data = {
       type_sql: type,
       trac1_id: trac1_id,
+    };
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
+
+  gettrac1_read_assessment(type, assessment_id): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'trac1_risk.php';
+    const data = {
+      type_sql: type,
+      id: assessment_id,
     };
     return this.http.post<data>(apiUrl, data, { headers: header });
   }

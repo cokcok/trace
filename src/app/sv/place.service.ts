@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Subscription} from 'rxjs';
 import { MtdService } from './mtd.service';
-
+  
 @Injectable({
   providedIn: 'root'
-})
+}) 
 export class PlaceService {
   sub: Subscription;
-  place = [];labelAttribute ='description';
+  public place = [];labelAttribute ='description';
   constructor(private http:HttpClient, public mtdSv: MtdService,) {
     this.loadPlace();
    }
 
-  loadPlace(){
+  loadPlace(){ 
     this.sub = this.mtdSv
     .getplace()
     .subscribe((dataplace) => {
