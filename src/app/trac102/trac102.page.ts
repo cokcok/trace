@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, LoadingController } from '@ionic/angular';
-
 import { Subscription } from "rxjs";
 import { Trac1Service } from '../sv/trac1.service';
 import { ConfigService } from '../sv/config.service';
@@ -9,6 +8,7 @@ import { FormBuilder, FormGroup,  FormControl, } from "@angular/forms";
 import { Trac103Page } from '../trac103/trac103.page';
 import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
+import { Trac104Page } from '../trac104/trac104.page';
 @Component({
   selector: 'app-trac102',
   templateUrl: './trac102.page.html',
@@ -18,10 +18,10 @@ export class Trac102Page implements OnInit {
   trac1_id:string;merchantname:string;filterTerm: string;
   sub: Subscription;
   data = []; page = 0; maxpadding: number; limit = 50;
-
+  frist = null;
   ionicForm: FormGroup;isSubmitted = false;  portControl: FormControl;
 
-  constructor(private route: ActivatedRoute, private tracSv: Trac1Service,public formBuilder: FormBuilder, private modalCtrl: ModalController,private loadingController: LoadingController) {
+  constructor(private route: ActivatedRoute, private tracSv: Trac1Service,public formBuilder: FormBuilder, private modalCtrl: ModalController,private loadingController: LoadingController,public configSv:ConfigService) {
     this.route.queryParams.subscribe((res) => {
       //let item = JSON.parse(res.value)
      // console.log(res,res['trace1_id']);
@@ -30,7 +30,7 @@ export class Trac102Page implements OnInit {
       this.merchantname = res['merchantname'];
 
      
-    });
+    }); 
     
    }
 
@@ -49,24 +49,38 @@ export class Trac102Page implements OnInit {
 
 
 
-  loaddata(padding?: number, infiniteScroll?){
+ async loaddata(padding?: number, infiniteScroll?){
     let datalimit;
+    let item = {
+      'type_sql' : 'read',
+      'trac1_id' : this.trac1_id,
+      
+    }
+    await this.loadingController.create({
+      message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่'
+    }).then((loading) => {
+
+      loading.present();
+
     this.sub = this.tracSv
-    .gettrac1_read('read',this.trac1_id)
+    .gettrac1_read(item)
     .subscribe((data) => {
       if (data !== null) {
         //console.log(data);
         //this.maxpadding = data["maxpadding"];
        // datalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));
-        console.log( this.data);
+       // console.log( this.data);
+        loading.dismiss();      
         // if (infiniteScroll) {
         //   infiniteScroll.target.complete();
         // }
       }else{
         this.maxpadding = 0;
+        loading.dismiss();      
       }
     });
+     }); 
   }
 
   // SearchData(padding, infiniteScroll?){
@@ -111,7 +125,7 @@ export class Trac102Page implements OnInit {
 
    
     const item   = this.data[indexsell]['detail_land'][indexland];
-    console.log(item);
+    // console.log(item);
      const modal = await this.modalCtrl.create({
        component: Trac103Page,
        cssClass: 'my-modal',
@@ -130,7 +144,8 @@ export class Trac102Page implements OnInit {
       // item.text_status = 'ประเมินแล้ว/ผ่าน EUDR/นำเข้า trace3';
       item.trac1_land_assessment_id = data['trac1_land_assessment_id'];
       item.text_status = showtxt;
-    
+      item.frist = 0 ;
+      //this.frist = 0;
      }else if (role === 'cancel'){  
        //item['code'] = '555';
        //console.log(item['code'],item);
@@ -138,29 +153,99 @@ export class Trac102Page implements OnInit {
     
    }
 
-   Adduser()
+   async Adduser()
    {
+    let item = {
+      'type_sql' : 'AddUser',
+      'trac1_id' : this.trac1_id,
+      'running' :  this.data.length+1,
+    }
+    // console.log(data);
 
-   }
-
-   refreshForm()
-   {
-
-   }
-
-   selectData(e,indexland,indexsell)
-  {
-    //console.log(id);
-    
-    const item   = this.data[indexsell]['detail_land'][indexland];
-    if(e.currentTarget.checked === false){
-      item.text_status =  item.text_status +  "/นำเข้า trace3";
-    }else{
-      item.text_status =  item.tmp_text_status;
+    const modal = await this.modalCtrl.create({
+      component: Trac104Page,
+      cssClass: 'my-modal',
+      //componentProps: {id, po_running, tmppostatus: item[0].po_status},
+      componentProps: {data : item},
+    });
+    await modal.present();
+    const {data, role} = await modal.onWillDismiss();
+    console.log(data,role);
+    if (role === 'submit'){        
+        this.data.unshift(data.data_detail[0]);
+        //this.data.unshift(data.data_detail.map((item) => Object. assign({}, item)));
+        //this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));
     }
 
-    
-   
+   }
+
+   async reloadData(indexsell)
+   {
+    const item   = this.data[indexsell];
+    //const itemLand   = this.data[indexsell]['detail_land'];  
+   // console.log(this.data ,this.data[indexsell]['detail_land']);
+    let data = {
+      'type_sql' : 'reloadData',
+      'seller_id' : item.seller_id,
+      'seller_idc' : item.seller_idc,
+      'trac1_id' : this.trac1_id,
+      'seller_name' : item.seller_name ,
+      'running' : item.running,
+      'empid' : this.configSv.emp_id,
+    }
+    this.data[indexsell]['detail_land'] = [];
+   //console.log(this.data);
+    await this.loadingController.create({
+      message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่'
+    }).then((loading) => {
+
+      loading.present();
+      this.sub = this.tracSv
+      .trac1_reloadData(data)
+      .subscribe((data) => {
+          //delete this.data[indexsell]['detail_land']
+          //console.log(data.data_detail[0]['appno']);
+          this.data[indexsell]['appno'] = data.data_detail[0]['appno'];
+          this.data[indexsell]['detail_land'] =  this.data[indexsell]['detail_land'].concat(data.data_detail[0]['detail_land'].map((item) => Object. assign({}, item)));
+          loading.dismiss();      
+      });
+      
+    }); 
+
+
+   }
+
+   async  selectData(e,indexland,indexsell)
+  { 
+    const item   = this.data[indexsell]['detail_land'][indexland];
+    let selected_land;
+    if(e.currentTarget.checked === false){
+      item.text_status =  item.text_status +  "/นำเข้า trace3";
+      selected_land = 1;
+    }else{
+      item.text_status =  item.tmp_text_status;
+      selected_land = null;
+    }
+    //console.log(item);
+    let data = {
+      'type_sql' : 'updateLand',
+      'trace1_land_id' : item.id,
+      'selected_land' : selected_land
+    }
+
+    await this.loadingController.create({
+      message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่'
+    }).then((loading) => {
+
+      loading.present();
+      this.sub = this.tracSv
+      .crudtrac1_selectland(data)
+      .subscribe((data) => {
+      
+          loading.dismiss();      
+      });
+      loading.dismiss();
+    }); 
   }
 
    async Printuser()
@@ -171,25 +256,29 @@ export class Trac102Page implements OnInit {
     }).then((loading) => {
 
       loading.present();
-      this.sub = this.tracSv
-      .gettrac1_read('readexcel',this.trac1_id)
-      .subscribe((data) => {
-        if (data !== null) {
-         
+      let item = {
+        'type_sql' : 'readexcel',
+        'trac1_id' : this.trac1_id,
         
+      }
+      this.sub = this.tracSv
+      .gettrac1_read(item)
+      .subscribe((data) => {        
+        if (data !== null) {   
           this.loadexcel(data.data_detail.map((item) => Object.assign({}, item)))
           loading.dismiss();
         }
+        else
+        {
+          this.configSv.ChkformAlert('ไม่พบข้อมูล');
+          loading.dismiss();
+        }
+
       });
     });
    }
 
    loadexcel(data) {
-    // if (data.length === 0) {
-    //   this.configSv.ChkformAlert('ไม่พบข้อมูล');
-    //   return false;
-    // }
-    //console.log(data);
    let currentDate = new Date().toLocaleDateString();
    let currentTime = new Date().toLocaleTimeString();
     const ws_name = 'sheetname';

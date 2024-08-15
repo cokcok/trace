@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { Trac105PageRoutingModule } from './trac105-routing.module';
-
 import { Trac105Page } from './trac105.page';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    Trac105PageRoutingModule
+    Trac105PageRoutingModule,Ng2SearchPipeModule
   ],
   declarations: [Trac105Page]
 })

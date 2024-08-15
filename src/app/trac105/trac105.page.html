@@ -3,10 +3,57 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
      </ion-buttons>
-    <ion-title>ข้อมูล Trac1-2 ที่นำเข้า</ion-title>
+    <ion-title>ข้อมูล Trac1-2</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="reloadData()">
+        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">   
+      <ion-button (click)="Adduser()">
+        <ion-icon slot="icon-only" src="./assets/icons/plus.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
+ 
 <ion-content>
+  <div> 
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-card *ngFor="let c of data | filter:filterTerm;index as i  ">
+      <ion-item > 
+       <!-- (click)="selectData(c.id,c.merchantname )" --> 
+        <ion-row>       
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.merchantname }} {{ c.operatorname }} </h3>
+            </ion-text>
+             <p> {{ c.rubbermarket }} </p>
+          </ion-label>
+        
+         
+        </ion-row>
+        <ion-buttons slot="end">
+          <ion-button (click)="selectDataMain(c.id)">
+            <ion-icon slot="icon-only" src="./assets/icons/main.svg"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button (click)="selectData(c.id,c.merchantname )">
+            <ion-icon slot="icon-only" src="./assets/icons/edituser.svg"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <!-- <ion-buttons slot="end">
+          <ion-button (click)="reloadData(i)">
+            <ion-icon slot="icon-only" src="./assets/icons/reload.svg"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+
+     
+      </ion-item>
+
+      </ion-card>
+  </div>
+
 
 </ion-content>

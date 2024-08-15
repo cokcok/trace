@@ -41,6 +41,30 @@ const routes: Routes = [
   {
     path: 'trac105',
     loadChildren: () => import('./trac105/trac105.module').then( m => m.Trac105PageModule)
+  },
+  {
+    path: 'sysmenu',
+    loadChildren: () => import('./sysmenu/sysmenu.module').then( m => m.SysmenuPageModule)
+  },
+  {
+    path: 'syssubmenu',
+    loadChildren: () => import('./syssubmenu/syssubmenu.module').then( m => m.SyssubmenuPageModule)
+  },
+  {
+    path: 'sysgroup',
+    loadChildren: () => import('./sysgroup/sysgroup.module').then( m => m.SysgroupPageModule)
+  },
+  {
+    path: 'sysgroupmenu',
+    loadChildren: () => import('./sysgroupmenu/sysgroupmenu.module').then( m => m.SysgroupmenuPageModule)
+  },
+  {
+    path: 'mtduser',
+    loadChildren: () => import('./mtduser/mtduser.module').then( m => m.MtduserPageModule)
+  },
+  {
+    path: 'sysgroupmenu01',
+    loadChildren: () => import('./sysgroupmenu01/sysgroupmenu01.module').then( m => m.Sysgroupmenu01PageModule)
   }
 
 

@@ -36,7 +36,7 @@
         </ion-row>
      
         <ion-buttons slot="end">
-          <ion-button (click)="refreshForm()">
+          <ion-button (click)="reloadData(i)">
             <ion-icon slot="icon-only" src="./assets/icons/reload.svg"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -49,16 +49,22 @@
           <div *ngIf="c.detail_land?.length > 0">
             <ion-row  *ngFor="let cc of c.detail_land;let ii = index;">
               <ion-col class="aligncontent" size="auto" > 
-                <!-- -->
-                <ion-buttons *ngIf="(cc.gid != null && cc.land_status === '0')  && cc.trac1_land_assessment_id === null"   >
-                  <!--  -->
+                
+                <ion-buttons *ngIf="(cc.gid != null && cc.land_status === '0')  && (cc.trac1_land_assessment_id === null )"   >             
                    <ion-button (click)="checklistForm(ii,i)">
                      <ion-icon slot="icon-only" src="./assets/icons/checklist.svg"></ion-icon>
                    </ion-button>
                  </ion-buttons> 
-                 <ion-item *ngIf="  cc.trac1_land_assessment_id !== null  ">
+                 <ion-item *ngIf="cc.trac1_land_assessment_id !== null && cc.frist === null">
                   <ion-checkbox  (click)="selectData($event,ii,i)" color="dark" > </ion-checkbox>
                 </ion-item>
+                
+                <ion-buttons 
+                *ngIf="cc.trac1_land_assessment_id !== null && cc.frist === 0"  >             
+                  <ion-button (click)="checklistForm(ii,i)">
+                    <ion-icon slot="icon-only" src="./assets/icons/checklist.svg"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
                </ion-col>             
               <ion-col  size="auto" *ngIf="cc.gid != null"><u class="showlabelheader">GID</u> {{cc.gid}}</ion-col>
               <ion-col  size="auto" *ngIf="cc.ld_type != null"><u class="showlabelheader">เอกสารสิทธิ์</u> {{cc.ld_type}}</ion-col>

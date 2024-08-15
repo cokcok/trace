@@ -1,0 +1,117 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>เมนูหลัก</ion-title>
+    <ion-buttons slot="start"> 
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="refreshForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<form [formGroup]="ionicForm" novalidate>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+        <input type="hidden" formControlName="highlight">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label position="floating">TITLE</ion-label>
+          <ion-input formControlName="title" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.title.errors?.required">
+            กรุณาระบุ TITLE
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label position="floating">URL</ion-label>
+          <ion-input formControlName="url" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.url.errors?.required">
+            กรุณาระบุ URL
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label position="floating">SVG</ion-label>
+          <ion-input formControlName="svg" type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label position="floating">SEQ</ion-label>
+          <ion-input formControlName="seq" type="number"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.seq.errors?.required">
+            กรุณาระบุ SEQ
+          </span>
+          <span class="error" *ngIf="isSubmitted && errorControl.seq.errors?.pattern">
+            SEQ ต้องเป็นตัวเลข
+          </span>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label position="floating">มีเมนูย่อย</ion-label>
+          <!-- interface="popover" value="" -->
+          <ion-select formControlName="submenu">
+            <ion-select-option value="">ไม่มี</ion-select-option>
+            <ion-select-option value="true">มี</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label position="floating">group_name</ion-label>
+          <ion-input formControlName="group_name" type="text"></ion-input>
+          <span class="error" *ngIf="isSubmitted && errorControl.group_name.errors?.required">
+            กรุณาระบุ group_name
+          </span>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
+<ion-content padding>
+  <div scrollY="true" id="myFixZone">
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-list>
+      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm" [ngClass]="c.highlight ? 'newdata': ''"
+        (click)="selectData(c.id)">
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.title }}</h3>
+            </ion-text>
+            <p>ลำดับ {{ c.seq }}</p>
+          </ion-label>
+          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option color="danger" (click)="cancelData(c.id)">
+            <ion-icon slot="end" name="trash"></ion-icon>
+            ลบ
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+    </ion-list>
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+  </div>
+</ion-content>

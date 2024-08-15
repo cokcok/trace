@@ -9,10 +9,10 @@ import { MtdService } from './mtd.service';
 export class PlaceService {
   sub: Subscription;
   public place = [];labelAttribute ='description';
-  constructor(private http:HttpClient, public mtdSv: MtdService,) {
+  constructor( public mtdSv: MtdService,) {
     this.loadPlace();
    }
-
+  
   loadPlace(){ 
     this.sub = this.mtdSv
     .getplace()

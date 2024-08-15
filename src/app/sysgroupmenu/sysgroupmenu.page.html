@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>เชื่อมเมนูกับกลุ่มผู้ใช้</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+     </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+  <div scrollY="true" id="myFixZone">
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-list>
+      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm"
+        (click)="selectData(c.id)">
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.group_name }}</h3>
+            </ion-text>
+          </ion-label>
+          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+  </div>
+</ion-content>

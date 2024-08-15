@@ -3,7 +3,6 @@ import { ModalController,NavParams,LoadingController } from '@ionic/angular';
 import { Subscription } from "rxjs";
 import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ConfigService } from '../sv/config.service';
-
 import { Trac1Service } from '../sv/trac1.service';
 @Component({
   selector: 'app-trac103',
@@ -72,7 +71,7 @@ export class Trac103Page implements OnInit {
     return this.ionicForm.controls;
   }
 
-  radioGroupChange()
+  radioGroupChange(e)
   {
     let risktotal = 11;
     let checkrisk0:number = 0;

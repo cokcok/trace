@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons> 
+    <ion-title>เชื่อมเมนูกับกลุ่มผู้ใช้ {{ group_name }}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="refreshForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<form [formGroup]="ionicForm" novalidate>
+  <input type="hidden" formControlName="highlight">
+  <input type="hidden" formControlName="group_id">
+  <ion-grid>
+<ion-row> 
+  <ion-col >
+    <ion-item>
+      <ion-label>การเชื่อมโยงเมนูย่อย</ion-label>
+      <ionic-selectable
+        interface="popover"
+        item-content
+        formControlName="syssubmenu_id"
+        itemValueField="id"
+        itemTextField="title_show"
+        [items]="ports"
+        [isMultiple]="true"
+        [canSearch]="true"
+        [canClear]="true"
+        clearButtonText="ล้างข้อมูล"
+        closeButtonText="ยกเลิก"
+        >
+      </ionic-selectable>
+    </ion-item>
+    <span class="error" *ngIf="isSubmitted && errorControl.syssubmenu_id.errors?.required">
+      กรุณาระบุ การเชื่อมโยง
+    </span>
+  </ion-col>
+</ion-row>
+</ion-grid>
+</form>
+<ion-content>
+  <div scrollY="true" id="myFixZone">
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-list>
+      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm"  [ngClass]="c.highlight ? 'newdata': ''">
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.title_show }}</h3>
+            </ion-text>
+          </ion-label>
+          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option color="danger" (click)="deleteData(c.id)">
+            <ion-icon slot="end" name="trash"></ion-icon>
+            ลบ
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+  </div>
+</ion-content>
