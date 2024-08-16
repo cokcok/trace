@@ -1,9 +1,128 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>mtduser</ion-title>
+    <ion-buttons slot="start">
+     <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>ข้อมูลผู้ใช้</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="refreshForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header>  
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+          <input type="hidden" formControlName="highlight">
+        </ion-col>
+      </ion-row>
 
+      <ion-row>
+        <ion-col>
+          <ion-item>
+              <ion-label class="showlabel" position="floating">ค้นหารหัสพนักงาน (กด enter เพื่อค้นหา)</ion-label>
+              <ion-input formControlName="emp_code" type="text"  (keyup.enter)="SearchEmp(value)" ></ion-input>
+              <!-- <button ion-button item-end (click)="search(emp_code)"><ion-icon name="search"></ion-icon></button> -->
+            </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ชื่อ - นามสกุล</ion-label>
+            <ion-input formControlName="emp_name" type="text"  ></ion-input>
+          </ion-item>
+        </ion-col>   
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">สังกัด</ion-label>
+            <ion-input formControlName="deptname" type="text"  ></ion-input>
+          </ion-item>
+        </ion-col>    
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">Username</ion-label>
+            <ion-input formControlName="username" type="text"  ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.username.errors?.required">
+              กรุณาระบุ Username
+            </span>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">Password</ion-label>
+            <ion-input formControlName="password" type="text"  ></ion-input>
+            <!-- [readonly] = "disableSelect"  -->
+            <span class="error" *ngIf="isSubmitted && errorControl.password.errors?.required">
+              กรุณาระบุ password
+            </span>
+          </ion-item>
+        </ion-col>
+     
+          <ion-col>
+            <ion-item>
+              <ion-label class="showlabel" position="floating">กลุ่มผู้ใช้งาน</ion-label>
+              <ionic-selectable 
+                interface="popover"
+                item-content
+                formControlName="group_id"
+                itemValueField="id"
+                itemTextField="description"
+                [items]="ports"
+                [canSearch]="true"
+                [canClear]="true"
+                clearButtonText="ล้างข้อมูล"
+                closeButtonText="ยกเลิก"
+                >
+              </ionic-selectable>
+            </ion-item>
+            <span class="error" *ngIf="isSubmitted && errorControl.group_id.errors?.required">
+              กรุณาระบุ กลุ่มผู้ใช้งาน
+            </span>
+          </ion-col>
+        
+      
+      </ion-row>
+    </ion-grid>
+    </form>   
 <ion-content>
-
+  <div scrollY="true" id="myFixZone">
+    <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
+    <ion-list>
+      <ion-item-sliding *ngFor="let c of data  | filter:filterTerm" [ngClass]="c.highlight ? 'newdata': ''"
+        (click)="selectData(c.id)">
+        <ion-item>
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{ c.emp_name }}</h3>
+            </ion-text>
+             <p>กลุ่ม {{ c.group_name }} </p>
+          </ion-label>
+          <ion-badge slot="end" color="success">{{ c.id }}</ion-badge>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option color="warning" (click)="resetPass(c.id)">
+            <ion-icon slot="end" name="refresh"></ion-icon>
+            Reset Pwd
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="cancelData(c.id)">
+            <ion-icon slot="end" name="trash"></ion-icon>
+            ลบ
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+  </div>
 </ion-content>

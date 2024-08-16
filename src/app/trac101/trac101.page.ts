@@ -192,7 +192,14 @@ export class Trac101Page implements OnInit {
   }
 
   loaddata_product(padding: number, infiniteScroll?) {
-    this.sub = this.mtdSv.getmtd(0, padding).subscribe((data) => {
+    let vdata = {
+      //'padding': padding,
+      //'limit': limit,
+      //'condition':condition,
+      'type_sql': 'read'
+    }
+
+    this.sub = this.mtdSv.getmtd(0, vdata).subscribe((data) => {
       if (data !== null) {
         this.ports_product = data.data_detail.map((item) =>
           Object.assign({}, item)
@@ -252,10 +259,6 @@ export class Trac101Page implements OnInit {
       });
   }
 
-  dismissModal() {
-    //this.modalCtrl.dismiss();
-    //this.navCtrl.back();
-  }
 
   async loaddata_edit() {
     if (typeof this.trac1_id !== 'undefined') {

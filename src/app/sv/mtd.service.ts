@@ -11,7 +11,7 @@ import { place } from '../models/place';
   providedIn: 'root'
 })
 export class MtdService {
-  getpage = ['mtd_product.php']//0 indexล่าสุด
+  getpage = ['mtd_product.php','mtd_user.php']//1 indexล่าสุด
   constructor(private http: HttpClient, private configSv: ConfigService) { 
    
   }
@@ -24,15 +24,10 @@ export class MtdService {
  
 
   
-  getmtd(page:number,padding: number, limit: number = 9999999999,condition?): Observable<data> {
+  getmtd(page:number,data): Observable<data> {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + this.getpage[page];
-     let data = {
-      'padding': padding,
-      'limit': limit,
-      'condition':condition,
-      'type_sql': 'read'
-    }
+    
     return this.http.post<data>(apiUrl, data, { headers: header });
   }
 
@@ -40,6 +35,14 @@ export class MtdService {
     const header = { 'Content-Type': 'application/json' };
     let apiUrl = this.configSv.ip + 'getpro_amp_tam.php';    
     return this.http.post<data>(apiUrl, vdata, { headers: header });
+  }
+
+
+  crudmtd_user(vdata: any, type?: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'mtd_user.php';   
+    //let data;  
+    return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
   }
 
 
