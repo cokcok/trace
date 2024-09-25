@@ -22,7 +22,7 @@ export class SyssubmenuPage implements OnInit {
   ngOnInit() {
     this.portControl = this.formBuilder.control("", Validators.required);
     this.ionicForm = this.formBuilder.group({
-      id: [ null ],
+      id: [],
       title: ["", [Validators.required]],
       url: ["", [Validators.required]],
       svg: [""],

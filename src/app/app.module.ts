@@ -16,7 +16,7 @@ import { MomentModule } from 'angular2-moment'; // optional, provides moment-sty
 import { IonicSelectableModule } from 'ionic-selectable';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AutoCompleteModule } from 'ionic4-auto-complete';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -25,7 +25,7 @@ import { AutoCompleteModule } from 'ionic4-auto-complete';
     // Register the ServiceWorker as soon as the app is stable
     // or after 30 seconds (whichever comes first).
     registrationStrategy: 'registerWhenStable:30000'
-  }), HttpClientModule, MomentModule,NgIdleKeepaliveModule.forRoot(),IonicSelectableModule,AutoCompleteModule],
+  }), HttpClientModule, MomentModule,NgIdleKeepaliveModule.forRoot(),IonicSelectableModule,AutoCompleteModule,Ng2SearchPipeModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Geolocation, Device, NetworkInterface, DeviceDetectorService,InAppBrowser],
   bootstrap: [AppComponent],
 })

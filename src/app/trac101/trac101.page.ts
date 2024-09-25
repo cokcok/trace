@@ -40,7 +40,7 @@ export class Trac101Page implements OnInit {
   ports_tambon: any;
   tmpdata = [];
   isSubmitted = false;
-  trac1_id: string;
+  trac1_id: string; 
   constructor(
     private route: ActivatedRoute,
     public formBuilder: FormBuilder,
@@ -241,8 +241,9 @@ export class Trac101Page implements OnInit {
                     //  xxx :'aaa',
                     trace1_id: data.id,
                     merchantname: this.ionicForm.controls['merchantname'].value,
-                  }, //,skipLocationChange:true
+                  }, skipLocationChange:true
                 });
+                this.ionicForm.reset();
                 loading.dismiss();
               } else {
                 this.configSv.ChkformAlert(data.status);

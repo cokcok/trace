@@ -14,15 +14,11 @@ export class SigninService {
   constructor(private http: HttpClient, private configSv: ConfigService) { }
 
 
-  signin(username: string, password: string, token?): Observable<employee> {
+  signin(data): Observable<employee> {
     const header = { 'Content-Type': 'application/json' };
     const apiUrl = this.configSv.ip + 'signin.php';
-    let data;
-    data = { 
-      'username': username,
-      'password': password,
-      'token': token,
-    }
+   // let data;
+   
     return this.http.post<employee>(apiUrl, data, { headers: header });
   }
 

@@ -17,7 +17,7 @@ export class SysmenuPage implements OnInit {
   id: number;
   data = [];
   constructor(public formBuilder: FormBuilder, public configSv: ConfigService, public sysmenuSv: SysmenuService, private alertCtrl: AlertController, private loadingController: LoadingController) { }
-
+ 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       id: [null],
@@ -53,6 +53,7 @@ export class SysmenuPage implements OnInit {
     this.ionicForm.controls['type_sql'].setValue('update');
    }
    //console.log(this.ionicForm.value,this.ionicForm.controls['id'].value);
+  
     await this.loadingController
       .create({
         message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่',

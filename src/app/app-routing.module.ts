@@ -30,7 +30,8 @@ const routes: Routes = [
   {
     path: 'trac102', //:trace1_data
     loadChildren: () => import('./trac102/trac102.module').then( m => m.Trac102PageModule)
-  },  {
+  },
+  {
     path: 'trac103',
     loadChildren: () => import('./trac103/trac103.module').then( m => m.Trac103PageModule)
   },
@@ -65,6 +66,10 @@ const routes: Routes = [
   {
     path: 'sysgroupmenu01',
     loadChildren: () => import('./sysgroupmenu01/sysgroupmenu01.module').then( m => m.Sysgroupmenu01PageModule)
+  },
+  {
+    path: 'syspulicize',
+    loadChildren: () => import('./syspulicize/syspulicize.module').then( m => m.SyspulicizePageModule)
   }
 
 
@@ -72,7 +77,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules,useHash:true })
   ],
   exports: [RouterModule]
 })

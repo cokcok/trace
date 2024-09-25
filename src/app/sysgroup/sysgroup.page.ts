@@ -17,7 +17,7 @@ export class SysgroupPage implements OnInit {
   id: number;
   data = [];
   constructor(public formBuilder: FormBuilder, public configSv: ConfigService, public sysmenuSv: SysmenuService, private alertCtrl: AlertController, private loadingController: LoadingController) { }
-
+  
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
       id: [null],
@@ -101,7 +101,7 @@ export class SysgroupPage implements OnInit {
     }
     this.sub = this.sysmenuSv.getsysgroup(data).subscribe(
       (data) => {
-      console.log(data);
+      //console.log(data);
       this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));
         }      
     );

@@ -6,9 +6,6 @@
       <ion-item lines="full" class="un">
         <ion-label class="showlabel"  position="floating">วัน/เวลา</ion-label>
         <ion-input  formControlName="server_time" type="text" readonly></ion-input>
-        <span class="error" *ngIf="isSubmitted && errorControl.server_time.errors?.required">
-          กรุณาระบุ Username
-        </span>
       </ion-item>
       <ion-item lines="full" class="un">
         <ion-label class="showlabel"  position="floating">Username</ion-label>
@@ -19,7 +16,7 @@
       </ion-item>
       <ion-item lines="full" class="pass">
         <ion-label class="showlabel"  position="floating">Password</ion-label>
-        <ion-input  formControlName="password" type="password"  ></ion-input>
+        <ion-input  formControlName="password" type="password"  (keyup.enter)="submitForm()" ></ion-input>
         <span  class="error" *ngIf="isSubmitted && errorControl.password.errors?.required">
           กรุณาระบุ Password
         </span>
@@ -33,7 +30,7 @@
     </form>
    
 
- 
+  
     <ion-row  >
         <ion-label class="appversion"> App Version : {{versionNumber}} </ion-label>
     </ion-row>

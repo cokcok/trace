@@ -5,23 +5,41 @@
         <ion-list id="inbox-list">
           <!-- <ion-list-header>Inbox</ion-list-header>
           <ion-note>hi@ionicframework.com</ion-note> -->
+          <ion-img class="pic"  src={{pic}}  [hidden]="!pic"></ion-img>
+          <ion-note>{{emp_name}}</ion-note>
+          <ion-button class="btncolor" (click)="chPass()" fill="clear"> 
+          <ion-icon slot="icon-only" name="settings"></ion-icon>
+          </ion-button>
+          <div> <ion-note>สังกัด {{dept_name}}</ion-note> <ion-note>กลุ่ม {{group_name}}</ion-note></div>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+          <div *ngFor="let p of appPages | filter:filterTerm; let i = index;" >
+            <ion-menu-toggle auto-hide="false" *ngIf="p.url" >
+              <ion-item   [routerLink]="[p.url]" routerDirection="root" routerLinkActive='active' lines="none"  >
+                <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"
+                  [src]="'./assets/icons/' + p.svg + '.svg'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+            <ion-item button *ngIf="p.children?.length > 0" (click)="p.open = !p.open"  detail="false" >
+            
+              <ion-icon slot="start"  [src]="'./assets/icons/' + p.svg + '.svg'"   *ngIf="!p.open"></ion-icon>
+              <ion-icon slot="start" name="arrow-down" *ngIf="p.open"></ion-icon>
+              <ion-label  [class.active-parent]="p.open"  >{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>
+             <ion-list *ngIf="p.open">
+              <ion-menu-toggle auto-hide="false">
+                <ion-item *ngFor="let sub of p.children let sub_i = index"  routerDirection="root" [routerLink]="[sub.url]" lines="none" detail="false" class="sub-item" routerLinkActive='active'> 
+                  <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"
+                    [src]="'./assets/icons/' + sub.svg + '.svg'"></ion-icon>
+                  <ion-label>{{ sub.title }}</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list> 
+          </div>
+
         </ion-list>
-
-        <!-- <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
-          </ion-item>
-        </ion-list> -->
+        <label class="appversion" >App Version : {{versionNumber}}</label>
+       
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

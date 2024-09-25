@@ -29,10 +29,13 @@
               <h3>{{ c.merchantname }} {{ c.operatorname }} </h3>
             </ion-text>
              <p> {{ c.rubbermarket }} </p>
-          </ion-label>
-        
-         
-        </ion-row>
+          </ion-label>        
+        </ion-row> 
+        <ion-buttons slot="end">
+          <ion-button (click)="Printuser(c.id,c.merchantname)">
+            <ion-icon slot="icon-only" src="./assets/icons/excel.svg"></ion-icon>
+          </ion-button>
+        </ion-buttons>
         <ion-buttons slot="end">
           <ion-button (click)="selectDataMain(c.id)">
             <ion-icon slot="icon-only" src="./assets/icons/main.svg"></ion-icon>

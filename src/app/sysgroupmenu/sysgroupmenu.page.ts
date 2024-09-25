@@ -27,7 +27,7 @@ export class SysgroupmenuPage implements OnInit {
     }
     this.sub = this.sysmenuSv.getsysgroup(data).subscribe(
       (data) => {
-      console.log(data);
+      //console.log(data);
       this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));
         }      
     );

@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>จัดการประชาสัมพันธ์</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm(publicize)">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">ประชาสัมพันธ์</ion-label>
+    <ion-textarea [(ngModel)]="publicize" name="publicize" rows="50" ></ion-textarea>
+  </ion-item>
+</ion-content>

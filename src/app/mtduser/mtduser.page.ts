@@ -55,7 +55,7 @@ export class MtduserPage implements OnInit {
     );
   }
 
-  SearchEmp(code){
+  SearchEmp(){
     //console.log(code,this.ionicForm.controls['emp_code'].value);
     let item = {
       type_sql: 'search',
@@ -145,4 +145,11 @@ export class MtduserPage implements OnInit {
     });
   }
 
+  resetPass(id){
+
+  }
+
+  cancelData(id){
+    
+  }
 }

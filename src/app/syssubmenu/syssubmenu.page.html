@@ -20,7 +20,7 @@
   <ion-grid> 
     <ion-row>
       <ion-col>
-        เลขที่ระบบ <input type="text" formControlName="id" disabled class="IDnoshowBG">
+        เลขที่ระบบ <input type="text" formControlName="id" [attr.disabled]="true"   class="IDnoshowBG">
         <input type="hidden" formControlName="highlight">
       </ion-col>
     </ion-row>

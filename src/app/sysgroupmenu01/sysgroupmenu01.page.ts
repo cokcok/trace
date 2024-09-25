@@ -64,7 +64,7 @@ export class Sysgroupmenu01Page implements OnInit {
     this.sub = this.sysmenuSv.getsyssubmenu_sysgroupmenu(this.ionicForm.value).subscribe((data) => { 
       if (data !== null) {
         this.ports = data.data_detail.map((item) => Object.assign({}, item));      
-        console.log(this.ports);
+        //console.log(this.ports);
       }
     });
   }
@@ -104,30 +104,53 @@ export class Sysgroupmenu01Page implements OnInit {
                 });
                 this.refreshForm();
               }
-              // if (data.status === 'ok') {
-              //   this.ionicForm.controls['id'].setValue(data.id);
-              //   if(this.ionicForm.controls['type_sql'].value === 'insert')
-              //   {
-              //     this.data.unshift(this.ionicForm.value);
-              //     this.refreshForm();
-              //   }
-              //   else
-              //   {
-              //     this.data = this.data.filter(obj => obj.id !== data.id);
-              //     this.data.unshift(this.ionicForm.value);
-              //   }
-                
-              //   this.configSv.ChkformAlert(data.message);
-              //   loading.dismiss();
-              // } else {
-              //   this.configSv.ChkformAlert(data.status);
-              //   loading.dismiss();
-              // }
-
+ 
             });
         }
         loading.dismiss();
       });
+  }
+
+  async deleteData(item){
+    const confirm =  await this.alertCtrl.create({
+      header: 'ยืนยันการลบข้อมูล',
+      message: 'แน่ใจว่าต้องการลบเลขระบบที่ '+ item +' ? ',
+      buttons: [{
+        text: 'ยกเลิก',
+        handler: (data: any) => {
+           console.log('cancel ',data);
+        }
+      },
+      {
+        text: 'ตกลง',
+          handler: (data: any) => {
+            let vdata  = {
+             'id' : item,
+             'type_sql' : 'delete'
+            }
+          
+            this.sub = this.sysmenuSv.crudsyssubmenu_sysgroupmenu(vdata).subscribe(
+              (data) => {
+                if(data.status == 'ok')
+                {   
+                  this.configSv.ChkformAlert(data.message);
+                }
+                else
+                {
+                  this.configSv.ChkformAlert(data.message);
+                }              
+              }, (error) => {
+                console.log(JSON.stringify(error));
+              }, () => {
+                this.data = this.data.filter(obj => obj.id !== item);
+                this.refreshForm();
+              }
+            );
+        }
+      }]
+    });
+    confirm.present();
+
   }
 
 }
