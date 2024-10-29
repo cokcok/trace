@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, NavController } from '@ionic/angular';
 import { Subscription } from "rxjs";
 import { Trac1Service } from '../sv/trac1.service';
 import { ConfigService } from '../sv/config.service';
@@ -9,25 +9,31 @@ import { Trac103Page } from '../trac103/trac103.page';
 import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
 import { Trac104Page } from '../trac104/trac104.page';
-@Component({
+
+@Component({ 
   selector: 'app-trac102',
   templateUrl: './trac102.page.html',
   styleUrls: ['./trac102.page.scss'],
 })
 export class Trac102Page implements OnInit {
   trac1_id:string;merchantname:string;filterTerm: string;
+  product_id:string; product_price: number; flg_open:number;
   sub: Subscription;
   data = []; page = 0; maxpadding: number; limit = 50;
   frist = null;
   ionicForm: FormGroup;isSubmitted = false;  portControl: FormControl;
 
-  constructor(private route: ActivatedRoute, private tracSv: Trac1Service,public formBuilder: FormBuilder, private modalCtrl: ModalController,private loadingController: LoadingController,public configSv:ConfigService) {
+  constructor(private route: ActivatedRoute, private tracSv: Trac1Service,public formBuilder: FormBuilder, private modalCtrl: ModalController,private loadingController: LoadingController,public configSv:ConfigService,private navCtrl: NavController ) {
     this.route.queryParams.subscribe((res) => {
       //let item = JSON.parse(res.value)
-     // console.log(res,res['trace1_id']);
+      //console.log(res,res['trace1_id']);
      //this.group_name = item[0]['group_name'];
+
       this.trac1_id= res['trace1_id'];
       this.merchantname = res['merchantname'];
+      this.product_id = res['product_id'];
+      this.product_price = res['product_price'];
+      this.flg_open = res['flg_open'];
 
      
     }); 
@@ -48,7 +54,7 @@ export class Trac102Page implements OnInit {
   
 
 
-
+//checked : boolean = true;
  async loaddata(padding?: number, infiniteScroll?){
     let datalimit;
     let item = {
@@ -70,7 +76,8 @@ export class Trac102Page implements OnInit {
         //this.maxpadding = data["maxpadding"];
        // datalimit = data["limit"];
         this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));
-       // console.log( this.data);
+        //console.log( this.data);
+        
         loading.dismiss();      
         // if (infiniteScroll) {
         //   infiniteScroll.target.complete();
@@ -122,7 +129,7 @@ export class Trac102Page implements OnInit {
 
 
   async checklistForm(indexland,indexsell){
-
+ 
    
     const item   = this.data[indexsell]['detail_land'][indexland];
     // console.log(item);
@@ -130,7 +137,7 @@ export class Trac102Page implements OnInit {
        component: Trac103Page,
        cssClass: 'my-modal',
        //componentProps: {id, po_running, tmppostatus: item[0].po_status},
-       componentProps: {data : item},
+       componentProps: {data : item, product_id : this.product_id, product_price : this.product_price,flg_open:this.flg_open},
      });
      await modal.present();
      const {data, role} = await modal.onWillDismiss();
@@ -159,6 +166,7 @@ export class Trac102Page implements OnInit {
       'type_sql' : 'AddUser',
       'trac1_id' : this.trac1_id,
       'running' :  this.data.length+1,
+     
     }
     // console.log(data);
 
@@ -304,5 +312,17 @@ export class Trac102Page implements OnInit {
 
     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), this.merchantname + currentDate + ' ' + currentTime + '.xlsx');
 
+  }
+
+  back(){
+    //this.navCtrl.navigateForward('/trac105');
+    this.navCtrl.navigateForward(['/trac105'], {
+      queryParams: {
+        //  value : JSON.stringify(this.data.filter(function (val) { return val.id == id;})),
+        //  xxx :'aaa',
+        //trace1_id: data.id,
+       // merchantname: this.ionicForm.controls['merchantname'].value,
+      }, skipLocationChange:true
+    });
   }
 }

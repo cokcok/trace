@@ -12,10 +12,14 @@ import { Trac1Service } from '../sv/trac1.service';
 export class Trac103Page implements OnInit {
   sub: Subscription; item: any;ionicForm: FormGroup;;filterTerm: string;
   isSubmitted = false;
+  product_id:string; product_price: number;flg_open: number
   constructor(public formBuilder: FormBuilder,private modalCtrl:ModalController,public navParams : NavParams,public configSv:ConfigService ,private loadingController: LoadingController,private tracSv: Trac1Service) { 
     //console.log(this.navParams.get('data'));
     this.item = this.navParams.get('data');
-    //console.log(this.item)
+    this.product_id = this.navParams.get('product_id');
+    this.product_price = this.navParams.get('product_price');
+    this.flg_open = this.navParams.get('flg_open');
+   // console.log(this.navParams.get('product_id'),this.navParams.get('product_price'))
   }
   
   ngOnInit() {
@@ -28,6 +32,9 @@ export class Trac103Page implements OnInit {
       ld_type: [this.item['ld_type']],    
       ld_id: [this.item['ld_id']], 
       area_ha : [this.item['area_ha']],
+      area_rai : [this.item['area_rai']],
+      product_id : [this.product_id],
+      product_price : [this.product_price],
       product_qty : [],
       product : [],
       forest63 : [this.item['forest63']],
@@ -50,6 +57,7 @@ export class Trac103Page implements OnInit {
       consentform : [false, Validators.requiredTrue ],
       empid: [this.configSv.emp_id],
       dept_code : [this.configSv.dept_code],
+      year : [this.configSv.year],
       showtxt:[''],
       type_sql: [""],
       
@@ -133,6 +141,8 @@ export class Trac103Page implements OnInit {
           
         } else {
           
+         //let V_RAI = NVL(P_RAI,0) + (NVL(P_NGAN,0) * 0.25) + (NVL(P_WAH,0) * 0.0025);
+          console.log(this.ionicForm.value);
           this.sub = this.tracSv
           .crudtrac1_risk(this.ionicForm.value)
           .subscribe((data) => {
@@ -158,7 +168,7 @@ export class Trac103Page implements OnInit {
     .gettrac1_read_assessment('read',this.item['trac1_land_assessment_id'])
     .subscribe((data) => {
       if (data !== null) {
-        console.log(data.data_detail);
+        //console.log(data.data_detail);
         data.data_detail.forEach((item) => {
           for (const [key, value] of Object.entries(item)) {
               this.ionicForm.controls[key].setValue(value);

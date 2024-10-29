@@ -26,6 +26,7 @@ export class Trac104Page implements OnInit {
       seller_name : ['', [Validators.required]],
       type_sql : this.item['type_sql'],
       empid: [this.configSv.emp_id],
+      year : [this.configSv.year],
 
     });  
   }

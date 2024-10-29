@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      </ion-buttons>  -->
+      <ion-buttons slot="start">
+        <ion-button (click)="back()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    <ion-title>นำเข้า Trace 3  {{ merchantname }}</ion-title>
+    <ion-buttons slot="primary" *ngIf=" flg_open !== '0'">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid fixed>
+      <ion-row *ngIf=" flg_open !== '0'" >
+        <ion-col> 
+          <ion-item>
+            <ion-label class="showlabel" position="floating">วันที่ขาย</ion-label>
+            <ion-input formControlName="saledate" readonly [liIonic4Datepicker]="datePickerObj" type="text"></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.saledate.errors?.required">
+              กรุณาระบุ วันที่ขาย
+            </span> 
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf=" flg_open !== '0'" >
+        <ion-col>          
+          <input type="file" (change)="onFileChange($event)" (click)="onInputClick($event)"  multiple="false" />
+          <div id="xlsxcount" class="error"></div>
+          <br>
+          <ion-grid class="testclass">
+            <ion-row style="color:blue" >
+                <ion-col >จำนวนข้อมูลทั้งหมด </ion-col>
+                <ion-col>{{data.length }} </ion-col>
+                <ion-col>รายการ</ion-col>
+            </ion-row>
+            <ion-row style="color:rgba(0, 153, 66, 0.991)">
+              <ion-col>จำนวนที่นำข้อมูลเข้าได้ทั้งหมด </ion-col>
+              <ion-col>{{countimport}} </ion-col>
+              <ion-col>รายการ</ion-col>
+          </ion-row>
+          </ion-grid>
+
+        <!--   <div id="htmlerr" style="overflow-x:auto;"></div> -->
+          <div id="htmlerr" class="error"></div>
+          <!-- <div id="htmlout" style="overflow-x:auto;"></div> -->
+        </ion-col>
+      </ion-row>
+ 
+      <table>
+        <thead align="center">
+          <th width="10%">ลำดับ</th>
+          <th width="10%">เลขขึ้นทะเบียน</th>
+          <th width="10%">เลขบัตรปชช.</th>
+          <th width="20%">ชื่อ-สกุล</th>
+          <th width="10%">เลข GID</th>
+          <th width="10%">ปริมาณรวม </th>
+        </thead>
+        <tbody align="center">
+          <tr *ngFor="let c of data; let i = index ">
+            <td>{{i+1}}</td>
+            <td>{{c.appno}}</td>
+            <td>{{c.seller_idc}}</td>
+            <td>{{c.seller_name}} </td>
+            <td>{{c.gid}}</td>      
+            <td>{{c.volume}}</td>          
+          </tr>
+        </tbody>
+      </table>
+
+    </ion-grid>
+  </form>
+</ion-content>

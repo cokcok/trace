@@ -11,6 +11,7 @@
           <ion-icon slot="icon-only" name="settings"></ion-icon>
           </ion-button>
           <div> <ion-note>สังกัด {{dept_name}}</ion-note> <ion-note>กลุ่ม {{group_name}}</ion-note></div>
+          <div> <ion-note>ปีงบประมาณ {{year}}</ion-note> </div>
 
           <div *ngFor="let p of appPages | filter:filterTerm; let i = index;" >
             <ion-menu-toggle auto-hide="false" *ngIf="p.url" >

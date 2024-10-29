@@ -70,7 +70,15 @@ const routes: Routes = [
   {
     path: 'syspulicize',
     loadChildren: () => import('./syspulicize/syspulicize.module').then( m => m.SyspulicizePageModule)
+  },  {
+    path: 'trac301',
+    loadChildren: () => import('./trac301/trac301.module').then( m => m.Trac301PageModule)
+  },
+  {
+    path: 'sysyear',
+    loadChildren: () => import('./sysyear/sysyear.module').then( m => m.SysyearPageModule)
   }
+
 
 
 ];

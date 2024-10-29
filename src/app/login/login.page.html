@@ -4,8 +4,8 @@
     <p class="sign" >นำเข้าข้อมูล Trace</p>
     <form class="formmain" [formGroup]="ionicForm"  (ngSubmit)="submitForm()" novalidate >
       <ion-item lines="full" class="un">
-        <ion-label class="showlabel"  position="floating">วัน/เวลา</ion-label>
-        <ion-input  formControlName="server_time" type="text" readonly></ion-input>
+        <ion-label class="showlabel"  position="floating">ปี</ion-label>
+        <ion-input  formControlName="year" type="text" readonly></ion-input>
       </ion-item>
       <ion-item lines="full" class="un">
         <ion-label class="showlabel"  position="floating">Username</ion-label>
@@ -25,6 +25,15 @@
       <ion-row>
         <ion-col>
           <ion-button type="submit" color="secondary" expand="block">เข้าสู่ระบบ</ion-button>
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col>
+          <label class="error"> 
+            Username/Password(ค่าเริ่มต้น)  คือ รหัสพนักงาน 6 หลัก    
+          </label>
         </ion-col>
       </ion-row>
     </form>

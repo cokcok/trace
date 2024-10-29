@@ -18,7 +18,7 @@ export class ConfigService {
   public emp_id: string; public dept_code: number;
   public group_id: number; public pic: string;
   public prefix_name: string; public name: string; public surname: string; 
-
+  public year: number;
 
   idleState = 'Not started.';timedOut = false;lastPing?: Date = null;
   constructor(private http: HttpClient,private loadingController: LoadingController,private alertCtrl: AlertController,private idle: Idle, private keepalive: Keepalive,private navCtrl: NavController) { }

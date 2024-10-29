@@ -3,9 +3,11 @@ import { ConfigService } from '../sv/config.service';
 import { Trac1Service } from '../sv/trac1.service';
 import { FormGroup } from "@angular/forms"; 
 import { Subscription } from "rxjs";
-import {  NavController, LoadingController } from '@ionic/angular';
+import { ModalController, NavController, LoadingController } from '@ionic/angular';
 import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
+import { Trac301Page } from '../trac301/trac301.page';
+
 @Component({
   selector: 'app-trac105',
   templateUrl: './trac105.page.html',
@@ -16,7 +18,7 @@ export class Trac105Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   typesearch:boolean = false;
-  constructor( private tracSv: Trac1Service,public configSv:ConfigService,private navCtrl: NavController,private loadingController: LoadingController) { 
+  constructor( private tracSv: Trac1Service,public configSv:ConfigService,private navCtrl: NavController,private loadingController: LoadingController,private modalCtrl: ModalController) { 
     this.loaddata();
   }
 
@@ -39,7 +41,7 @@ async  loaddata(padding?: number, infiniteScroll?){
       this.sub = this.tracSv
       .gettrac1_read(item)
       .subscribe((data) => {
-        if (data !== null) {
+        if (data !== null) { 
           //console.log(data);
           //this.maxpadding = data["maxpadding"];
          // datalimit = data["limit"];
@@ -71,21 +73,54 @@ async  Adduser()
   }
 
  
-  selectData(id,merchantname) {
+  selectData(id,merchantname,product_id,product_price,flg_open) {
     //console.log(id);
     this.navCtrl.navigateForward(['/trac102'],{
       queryParams: {
         trace1_id : id,
-        merchantname: merchantname
+        merchantname: merchantname,
+        product_id : product_id,
+        product_price : product_price,
+        flg_open : flg_open,
         } ,skipLocationChange:true
       });
+  } 
+
+ async Importscales(id,merchantname,flg_open) {
+    //console.log(id);
+    // this.navCtrl.navigateForward(['/trac301'],{
+    //   queryParams: {
+    //     trace1_id : id,
+    //     merchantname: merchantname,
+    //     flg_open : flg_open,
+    //     } ,skipLocationChange:true
+    //   });
+
+      const item = this.data.filter((val) => val.id === id);
+     
+     const modal = await this.modalCtrl.create({
+       component: Trac301Page,
+       cssClass: 'my-modal',
+       //componentProps: {id, po_running, tmppostatus: item[0].po_status},
+       componentProps: {trace1_id : id, merchantname : merchantname, flg_open : flg_open},
+     });
+     await modal.present();
+     const {data, role} = await modal.onWillDismiss();
+
+     if(role === 'submit')
+     {
+      item[0].flg_open = data;
+   
+     }
+
   }
  
 
-  selectDataMain(id) {
+  selectDataMain(id,flg_open) {
     this.navCtrl.navigateForward(['/trac101'],{
       queryParams: {
         trace1_id : id,
+        flg_open : flg_open,
         } ,skipLocationChange:true
       });
   }
@@ -107,7 +142,7 @@ async  Adduser()
      let item = {
        'type_sql' : 'readexcel',
        'trac1_id' : id,
-       
+        
      }
      this.sub = this.tracSv
      .gettrac1_read(item)

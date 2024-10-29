@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   public appPages: any;
-   emp_name: string; dept_name: string; pic: string;
+   emp_name: string; dept_name: string; pic: string; year:number;
    public selectedIndex = 0; group_name:string;
    versionNumber: string|number;chkAuten = false;
    filterTerm: string;
@@ -30,6 +30,7 @@ export class AppComponent {
     //this.configSv.chkidle();
     this.initializeApp();
     this.Showversion();
+    //this.year = this.configSv.year;
     
   }
  
@@ -62,6 +63,8 @@ export class AppComponent {
         this.pic = data['employee'][0]['pic'];
         this.appPages = data['employee'][0]['page'];
         this.configSv.group_id = data['employee'][0]['sys_group_id'];
+        this.configSv.year = data['employee'][0]['year'];
+        this.year = data['employee'][0]['year'];
         // this.configSv.pic = data['employee'][0]['pic'];
         // this.configSv.prefix_name = data['employee'][0]['prefix_name'];
         // this.configSv.name = data['employee'][0]['name'];

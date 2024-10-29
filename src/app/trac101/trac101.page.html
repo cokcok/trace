@@ -8,8 +8,8 @@
         <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>  -->
-    <ion-title>ระบุผู้ค้า</ion-title>
-    <ion-buttons slot="primary">
+    <ion-title>ระบุผู้ค้า</ion-title> 
+    <ion-buttons slot="primary" *ngIf=" flg_open !== '0'">
       <ion-button (click)="submitForm()">
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
@@ -66,7 +66,7 @@
             <ion-item>
               <ion-label class="showlabel" position="floating">เลขทะเบียนเกษตรกร</ion-label>
               <ion-input formControlName="appno"  type="number" ></ion-input>
-             
+              
             </ion-item>
           </ion-col>
         </ion-row>
@@ -191,7 +191,7 @@
             <span class="error" *ngIf="isSubmitted && errorControl.place_rubber1.errors?.required">
               กรุณาระบุ สถานที่ตั้ง
             </span> 
-          </ion-col>
+          </ion-col> 
         </ion-row> -->
         <ion-row  *ngIf="trac1_id == null">
           <ion-col>

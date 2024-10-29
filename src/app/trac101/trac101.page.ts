@@ -41,6 +41,7 @@ export class Trac101Page implements OnInit {
   tmpdata = [];
   isSubmitted = false;
   trac1_id: string; 
+  flg_open:number;
   constructor(
     private route: ActivatedRoute,
     public formBuilder: FormBuilder,
@@ -56,10 +57,17 @@ export class Trac101Page implements OnInit {
   ) {
     this.route.queryParams.subscribe((res) => {
       this.trac1_id = res['trace1_id'];
+      this.flg_open = res['flg_open'];
+      
     });
+   
+   
   }
 
   ngOnInit() {
+
+   
+
     this.portControl_product = this.formBuilder.control(
       '',
       Validators.required
@@ -89,6 +97,7 @@ export class Trac101Page implements OnInit {
       tmpdata: ['', [Validators.required]],
       empid: [this.configSv.emp_id],
       dept_code: [this.configSv.dept_code],
+      year : [this.configSv.year],
       type_sql: [''],
     });
     this.loaddata_product(0);
@@ -215,6 +224,7 @@ export class Trac101Page implements OnInit {
     this.isSubmitted = true;
     this.ionicForm.controls['tmpdata'].setValue(this.tmpdata);
     this.ionicForm.controls['type_sql'].setValue('insert');
+    //console.log(this.ionicForm.value);
     await this.loadingController
       .create({
         message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่',
@@ -241,6 +251,8 @@ export class Trac101Page implements OnInit {
                     //  xxx :'aaa',
                     trace1_id: data.id,
                     merchantname: this.ionicForm.controls['merchantname'].value,
+                    product_id: this.ionicForm.controls['mtdproduct_id'].value.id,
+                    product_price: this.ionicForm.controls['mtdproduct_id'].value.price,
                   }, skipLocationChange:true
                 });
                 this.ionicForm.reset();

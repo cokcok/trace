@@ -19,7 +19,7 @@ export class MainPage implements OnInit {
     
   }
 
-
+ 
   loaddata() {
     this.sub = this.sysmenuSv
       .getpublicize()

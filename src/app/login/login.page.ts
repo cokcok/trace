@@ -6,7 +6,7 @@ import * as moment_ from 'moment';
 import 'moment/locale/th';
 import { ConfigService } from '../sv/config.service';
 import { SigninService } from '../sv/signin.service';
-
+import { SysmenuService } from '../sv/sysmenu.service';
 
 const moment = moment_;
 @Component({
@@ -18,23 +18,24 @@ export class LoginPage implements OnInit {
   ionicForm: FormGroup; sub: Subscription;
   isSubmitted = false; 
   versionNumber: string | number;
-  constructor(public formBuilder: FormBuilder, public menuCtrl: MenuController,public configSv:ConfigService,private navCtrl: NavController ,private singsv:  SigninService, private loadingController: LoadingController,) {
+  constructor(public formBuilder: FormBuilder, public menuCtrl: MenuController,public configSv:ConfigService,private navCtrl: NavController ,private singsv:  SigninService, private loadingController: LoadingController,public sysmenuSv: SysmenuService) {
     this.menuCtrl.enable(false);
    }
-
+ 
   ngOnInit() {
     //this.portControl_checktype = this.formBuilder.control("", Validators.required);
     //this.portControl_dept = this.formBuilder.control("");
     this.menuCtrl.enable(false);
     this.ionicForm = this.formBuilder.group({
-      server_time: [],
+      year: [],
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
       //check_type: this.portControl_checktype,
       //dept: this.portControl_dept,
       //problem_cause: [''],
     });
-    setInterval(() => { this.GetDateTime() }, 1000);
+    //setInterval(() => { this.GetDateTime() }, 1000);
+    this.loaddata_year();
   }
 
   
@@ -50,8 +51,20 @@ export class LoginPage implements OnInit {
     //this.loaddept();
   }
  
-  GetDateTime() {
-    this.ionicForm.controls["server_time"].setValue(moment().format('DD/MM/YYYY H:mm:ss'));
+  // GetDateTime() {
+  //   this.ionicForm.controls["server_time"].setValue(moment().format('DD/MM/YYYY H:mm:ss'));
+  // }
+
+  loaddata_year() {
+    this.sub = this.sysmenuSv
+      .getyear()
+      .subscribe((data) => {
+        if (data !== null) {
+            //this.name = data[0]['name'];
+            this.ionicForm.controls["year"].setValue(data[0]['name']);
+            //this.configSv.year = data[0]['name'];
+        }
+      });
   }
  
   async submitForm() {
