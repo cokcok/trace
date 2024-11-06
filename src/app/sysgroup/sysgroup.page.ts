@@ -34,7 +34,9 @@ export class SysgroupPage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    if(this.sub){
+      this.sub.unsubscribe();
+    }
   }
 
   refreshForm() {

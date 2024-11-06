@@ -39,5 +39,12 @@ export class SigninService {
     return this.fooSubject1;
   }
 
+
+  crudchpass(data: any, type?: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'chpass.php';    
+    return this.http.post<FeedBack>(apiUrl, data, { headers: header });
+  }
+
 }
  

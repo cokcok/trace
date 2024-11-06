@@ -76,7 +76,9 @@ export class Rwa01Page implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    if(this.sub){
+      this.sub.unsubscribe();
+    }
   }
 
   loaddata_checktype(){

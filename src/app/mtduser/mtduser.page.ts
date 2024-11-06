@@ -54,7 +54,7 @@ export class MtduserPage implements OnInit {
         }      
     );
   }
-
+ 
   SearchEmp(){
     //console.log(code,this.ionicForm.controls['emp_code'].value);
     let item = {
@@ -145,11 +145,5 @@ export class MtduserPage implements OnInit {
     });
   }
 
-  resetPass(id){
 
-  }
-
-  cancelData(id){
-    
-  }
 }

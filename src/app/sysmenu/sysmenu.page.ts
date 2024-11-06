@@ -109,7 +109,9 @@ export class SysmenuPage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    if(this.sub){
+      this.sub.unsubscribe();
+    }
   }
 
   selectData(id) {

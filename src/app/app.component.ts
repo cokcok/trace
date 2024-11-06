@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { ConfigService } from './sv/config.service';
 import { SigninService } from './sv/signin.service';
 import { Platform, NavController, MenuController } from '@ionic/angular';
@@ -26,7 +27,7 @@ export class AppComponent {
   //   { title: 'ออกจากระบบ ', url: '/folder/Logout', icon: 'mail' },
   // ];
   constructor( private platform: Platform,
-    public configSv: ConfigService,private singsv:  SigninService,private router: Router,) {
+    public configSv: ConfigService,private singsv:  SigninService,private router: Router,private navCtrl: NavController,public menuCtrl: MenuController) {
     //this.configSv.chkidle();
     this.initializeApp();
     this.Showversion();
@@ -104,6 +105,7 @@ export class AppComponent {
   } 
 
   chPass(){
-
+    this.menuCtrl.close();
+    this.navCtrl.navigateForward(['/chpass']);
   }
 }

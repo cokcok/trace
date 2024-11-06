@@ -18,7 +18,7 @@ import { Trac3Service } from '../sv/trac3.service';
 })
 export class Trac301Page implements OnInit {
   trac1_id:string;merchantname:string;filterTerm: string;
-  sub: Subscription;flg_open:number;
+  sub: Subscription;flg_open:any;
   data = []; page = 0; maxpadding: number; limit = 50;
   frist = null;  tmpdata = [];
   ionicForm: FormGroup;isSubmitted = false;  portControl: FormControl;
@@ -213,6 +213,11 @@ export class Trac301Page implements OnInit {
         }
       });
 
+      if (!this.ionicForm.valid) {
+        err = true;
+      }
+
+
       if (err == false) {
       const confirm =  await this.alertCtrl.create({
         header: 'เมื่อยืนยันข้อมูลแล้ว จะไม่สามารถแก้ไขข้อมูลได้อีก คุณต้องการยืนยันใช่ไหม?' ,
@@ -261,7 +266,7 @@ export class Trac301Page implements OnInit {
       }
       else
       {
-        document.getElementById("htmlerr").innerText = 'ไม่สามารนำเข้าข้อมูลได้ เนื่องจาก \n' + txtalert1;
+        document.getElementById("htmlerr").innerText = 'ไม่สามารถนำเข้าข้อมูลได้ เนื่องจาก \n' + txtalert1;
       }   
   }
 

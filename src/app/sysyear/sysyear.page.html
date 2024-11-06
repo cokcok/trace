@@ -1,9 +1,38 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>sysyear</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>ปีงบประมาณ</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="submitForm()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="ionicForm" novalidate>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="showlabel" position="floating">ปีงบประมาณ</ion-label>
+            <ion-input formControlName="year" type="text"  ></ion-input>
+            <span class="error" *ngIf="isSubmitted && errorControl.year.errors?.required">
+              กรุณาระบุ ปีงบประมาณ
+            </span>
+            <span class="error" *ngIf="isSubmitted && errorControl.year.errors?.minlength">
+              กรุณาระบุ ปีงบประมาณ ไมน้อยกว่า 4 หลัก
+            </span>
+            <span class="error" *ngIf="isSubmitted && errorControl.year.errors?.maxlength">
+              ห้ามระบุ ปีงบประมาณ มากกว่า 4 หลัก
+            </span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
 
+      </form>
 </ion-content>

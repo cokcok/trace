@@ -77,6 +77,14 @@ const routes: Routes = [
   {
     path: 'sysyear',
     loadChildren: () => import('./sysyear/sysyear.module').then( m => m.SysyearPageModule)
+  },
+  {
+    path: 'chpass',
+    loadChildren: () => import('./chpass/chpass.module').then( m => m.ChpassPageModule)
+  },
+  {
+    path: 'checkquota',
+    loadChildren: () => import('./checkquota/checkquota.module').then( m => m.CheckquotaPageModule)
   }
 
 

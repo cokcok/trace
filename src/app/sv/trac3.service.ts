@@ -29,4 +29,11 @@ export class Trac3Service {
     return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
   }
 
+  gettrac_quota(data): Observable<data> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'trac3.php';
+   
+    return this.http.post<data>(apiUrl, data, { headers: header });
+  }
+
 }

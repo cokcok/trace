@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+     </ion-buttons>
+    <ion-title>แก้ไขรหัสผ่าน</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="chPass()">
+        <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="ionicForm1" novalidate>
+    <ion-list>
+     <ion-list-header >
+       <h3>เปลี่ยนรหัสผ่าน</h3>
+     </ion-list-header>
+    </ion-list>
+    <ion-item>
+     <ion-label class="showlabel" position="floating">รหัสผ่านเก่า</ion-label>
+     <ion-input formControlName="oldpass" type="text"  ></ion-input>
+     <span class="error" *ngIf="isSubmitted1 && errorControl1.oldpass.errors?.required">
+       กรุณาระบุ รหัสผ่านเก่า
+     </span>
+   </ion-item>
+     <ion-item>
+       <ion-label class="showlabel" position="floating">รหัสผ่านใหม่</ion-label>
+       <ion-input formControlName="newpass" type="password"  ></ion-input>
+       <span class="error" *ngIf="isSubmitted1 && errorControl1.newpass.errors?.required">
+         กรุณาระบุ รหัสผ่านใหม่
+       </span>
+     </ion-item>
+     <ion-item>
+       <ion-label class="showlabel" position="floating">ยืนยันรหัสผ่านใหม่</ion-label>
+       <ion-input formControlName="comfirm_newpass" type="password"  ></ion-input>
+       <span class="error" *ngIf="isSubmitted1 && errorControl1.comfirm_newpass.errors?.required">
+         กรุณาระบุ ยืนยันรหัสผ่านใหม่
+       </span>
+       <span class="error" *ngIf="isSubmitted1 && ionicForm1.hasError('notSame')">
+         กรุณาระบุให้ตรงกับรหัสผ่านใหม่
+       </span>
+     </ion-item>
+     <!-- <ion-item>
+       <ion-button  (click)="chPass()" fill="outline">แก้ไขรหัสผ่าน</ion-button>
+     </ion-item> -->
+   </form>
+</ion-content>

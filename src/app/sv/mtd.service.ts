@@ -45,5 +45,12 @@ export class MtdService {
     return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
   }
 
+  crudmtd_year(vdata: any, type?: string, cause?): Observable<FeedBack> {
+    const header = { 'Content-Type': 'application/json' };
+    const apiUrl = this.configSv.ip + 'sysyear.php';   
+    //let data;  
+    return this.http.post<FeedBack>(apiUrl, vdata, { headers: header });
+  }
+
 
 }

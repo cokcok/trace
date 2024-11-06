@@ -3,23 +3,13 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
      </ion-buttons>
-    <ion-title>ข้อมูล Trac1-2</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button (click)="reloadData()">
-        <ion-icon slot="icon-only" src="./assets/icons/refresh.svg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="primary">   
-      <ion-button (click)="Adduser()">
-        <ion-icon slot="icon-only" src="./assets/icons/plus.svg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title>ตรวจสอบ โควตา</ion-title>
   </ion-toolbar>
 </ion-header>
 <form [formGroup]="ionicForm" novalidate>
   <ion-grid fixed>
     <ion-row>
-      <!-- <ion-col >
+      <ion-col >
         <ion-item>
           <ion-label class="showlabel" position="floating" >ปีงบประมาณ</ion-label>
           <ionic-selectable
@@ -37,7 +27,7 @@
             กรุณาระบุ ปีงบประมาณ
           </span>
         </ion-item> 
-      </ion-col> -->
+      </ion-col>
       <ion-col >
         <ion-item>
           <ion-label class="showlabel" position="floating" >ประเภทการค้นหา</ion-label>
@@ -85,50 +75,44 @@
   </ion-grid>
 </form>
 <ion-content>
-  <div> 
+  <div>
     <ion-searchbar placeholder="ค้นหา..." [(ngModel)]="filterTerm" animated="true"></ion-searchbar>
-    <ion-card *ngFor="let c of data | filter:filterTerm;index as i  ">
-      <ion-item > 
-       <!-- (click)="selectData(c.id,c.merchantname )" --> 
-        <ion-row>       
-          <ion-label>
-            <ion-text color="primary">
-              <h3>{{ c.merchantname }} {{ c.operatorname }} </h3>
-            </ion-text>
-             <p> {{ c.rubbermarket }} </p>
-          </ion-label>        
-        </ion-row> 
-        <ion-buttons slot="end">
-          <ion-button (click)="Importscales(c.id,c.merchantname,c.flg_open)">
-            <ion-icon slot="icon-only" src="./assets/icons/scales.svg"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button (click)="Printuser(c.id,c.merchantname)">
-            <ion-icon slot="icon-only" src="./assets/icons/excel.svg"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button (click)="selectDataMain(c.id,c.flg_open)">
-            <ion-icon slot="icon-only" src="./assets/icons/main.svg"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button (click)="selectData(c.id,c.merchantname,c.product_id,c.product_price,c.flg_open )">
-            <ion-icon slot="icon-only" src="./assets/icons/edituser.svg"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <!-- <ion-buttons slot="end">
-          <ion-button (click)="reloadData(i)">
-            <ion-icon slot="icon-only" src="./assets/icons/reload.svg"></ion-icon>
-          </ion-button>
-        </ion-buttons> -->
-
-     
+    <ion-card *ngFor="let c of data  | filter:filterTerm;index as i">
+      <ion-item  >
+        <!-- [ngClass]="{'qtychkwaring': inqtywaring(c.qty,c.qty_remain),'qtychk':  inqtyerror(c.qty,c.qty_remain)}" -->
+        <ion-grid fixed>
+          <ion-row> 
+            <ion-col> 
+              <u class="showlabel">เลขบัตรปชช.:</u> {{ c.seller_idc }}
+            </ion-col>
+            <ion-col> 
+              <u class="showlabel">เลขขึ้นทะเบียน :</u> {{ c.appno }}
+            </ion-col>
+            <ion-col> 
+              <u class="showlabel">ชื่อ-สกุล :</u> {{ c.seller_name }}
+            </ion-col>
+            
+          </ion-row>
+          <ion-row>
+            <ion-col> 
+              <u class="showlabel">GID :</u> {{ c.gid }}
+            </ion-col>
+            <ion-col> 
+              <u class="showlabel">เนื้อที่(GIS):</u> {{ c.area_rai }}
+            </ion-col>
+            <ion-col> 
+              <u class="showlabel">โควตา:</u> {{ c.all_quota | number }}
+            </ion-col>
+            <ion-col> 
+              <u class="showlabel">ปริมาณขายสะสม:</u> {{ c.all_volume | number }}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
-
-      </ion-card>
+    </ion-card>
+    <!-- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
   </div>
-
-
 </ion-content>

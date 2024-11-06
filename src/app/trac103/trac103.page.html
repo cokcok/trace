@@ -13,6 +13,12 @@
         <ion-icon slot="icon-only" src="./assets/icons/save.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <!-- <div *ngIf=" code != null">
+      <label> สวนปลูกแทน</label>
+      <ion-row>
+
+      </ion-row>
+    </div> -->
   </ion-toolbar>
 </ion-header>
  
@@ -27,7 +33,7 @@
               <ion-item>
                 <ion-label class="showlabel" position="floating">ประเภทเอกสารสิทธิ์</ion-label>
                 <ion-input formControlName="ld_type" type="text"></ion-input>
-              </ion-item>
+              </ion-item> 
             </ion-col>
             <ion-col>
               <ion-item>
@@ -42,13 +48,23 @@
               </ion-item>
             </ion-col>
         </ion-row>
-        <ion-row> 
+        <div *ngIf=" code != null">
+          <ion-row >
+            <ion-col>
+              <label class="showlabel" ><u>สวนปลูกแทน</u></label>
+            </ion-col>
+           </ion-row>
+           <ion-row>
+            <ion-col><label class="showlabel">เลขคำขอ :</label>  {{ code }}</ion-col> 
+            <ion-col><label class="showlabel">เลขอนุมัติ :</label>  {{ num_app }}</ion-col> 
+           </ion-row>
+           <ion-row>
+            <ion-col><label class="showlabel">สถานะสวน :</label> {{ afr_status_flg }}    {{ afr_status_name }}   </ion-col> 
             
-            
-        </ion-row>
-        <ion-row> 
-         
-      </ion-row>
+           </ion-row>
+        </div>
+       
+    
       <!-- <ion-row> 
         <ion-col>
           <ion-item>

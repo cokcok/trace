@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from '../sv/config.service';
 import { Trac1Service } from '../sv/trac1.service';
-import { FormGroup } from "@angular/forms"; 
 import { Subscription } from "rxjs";
 import { ModalController, NavController, LoadingController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
 import { utils, write, WorkBook } from 'xlsx';
 import { saveAs } from 'file-saver';
 import { Trac301Page } from '../trac301/trac301.page';
@@ -18,11 +18,22 @@ export class Trac105Page implements OnInit {
   data = []; page = 0;maxpadding:number;limit = 50;
   sub: Subscription; maxdatalimit=0;filterTerm: string;
   typesearch:boolean = false;
-  constructor( private tracSv: Trac1Service,public configSv:ConfigService,private navCtrl: NavController,private loadingController: LoadingController,private modalCtrl: ModalController) { 
-    this.loaddata();
-  }
+  portControl: FormControl; portssearch = [];
+  portControl_year: FormControl; portssearch_year = [];
+  constructor( private tracSv: Trac1Service,public configSv:ConfigService,private navCtrl: NavController,private loadingController: LoadingController,private modalCtrl: ModalController,public formBuilder: FormBuilder) { 
+    this.loaddata();this.loaddata_searchtype();
+  } 
 
   ngOnInit() {
+    this.portControl = this.formBuilder.control("", Validators.required);
+   // this.portControl_year = this.formBuilder.control("", Validators.required);
+    this.ionicForm = this.formBuilder.group({
+      typeserch_id: this.portControl,
+     // typeserch_year: this.portControl_year,
+      txtserach: ["",[Validators.required]],
+      type_sql : [""],
+      limit:[""],
+    }); 
   }
  
  
@@ -188,5 +199,23 @@ async  Adduser()
    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), merchantname + currentDate + ' ' + currentTime + '.xlsx');
 
  }
+
+
+ loaddata_searchtype() {
+  this.portssearch = [
+    {id: 0,search_type: 'ชื่อผู้ค้า'},
+    {id: 1,search_type: 'ชื่อผู้ดำเนินการ'},
+    {id: 2,search_type: 'เลขบัตรปชช.'},
+  ];
+}
+
+get errorControl() {
+  return this.ionicForm.controls;
+}
+
+SearchData(padding)
+{
+
+}
 
 }

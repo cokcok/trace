@@ -12,13 +12,20 @@ import { Trac1Service } from '../sv/trac1.service';
 export class Trac103Page implements OnInit {
   sub: Subscription; item: any;ionicForm: FormGroup;;filterTerm: string;
   isSubmitted = false;
-  product_id:string; product_price: number;flg_open: number
+  product_id:string; product_price: number;flg_open:any; code:any
+  num_app:any;next_period:any;afr_status_name:any; afr_status_flg:any;
   constructor(public formBuilder: FormBuilder,private modalCtrl:ModalController,public navParams : NavParams,public configSv:ConfigService ,private loadingController: LoadingController,private tracSv: Trac1Service) { 
     //console.log(this.navParams.get('data'));
     this.item = this.navParams.get('data');
     this.product_id = this.navParams.get('product_id');
     this.product_price = this.navParams.get('product_price');
     this.flg_open = this.navParams.get('flg_open');
+    this.code = this.item['code'];
+    this.num_app = this.item['num_app'];
+    this.next_period = this.item['next_period'];
+    this.afr_status_name = this.item['status_name'];
+    this.afr_status_flg = this.item['status_flg'];
+    //console.log(this.code);
    // console.log(this.navParams.get('product_id'),this.navParams.get('product_price'))
   }
   
@@ -178,7 +185,9 @@ export class Trac103Page implements OnInit {
     });
   }
 
-  // ngOnDestroy(): void {
-  //   this.sub.unsubscribe();
-  // }
+   ngOnDestroy(): void {
+     if(this.sub){
+      this.sub.unsubscribe();
+    }
+   }
 }

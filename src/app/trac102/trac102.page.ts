@@ -17,7 +17,7 @@ import { Trac104Page } from '../trac104/trac104.page';
 })
 export class Trac102Page implements OnInit {
   trac1_id:string;merchantname:string;filterTerm: string;
-  product_id:string; product_price: number; flg_open:number;
+  product_id:string; product_price: number; flg_open:any;
   sub: Subscription;
   data = []; page = 0; maxpadding: number; limit = 50;
   frist = null;

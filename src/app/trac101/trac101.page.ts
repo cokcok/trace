@@ -41,7 +41,7 @@ export class Trac101Page implements OnInit {
   tmpdata = [];
   isSubmitted = false;
   trac1_id: string; 
-  flg_open:number;
+  flg_open:any;
   constructor(
     private route: ActivatedRoute,
     public formBuilder: FormBuilder,
@@ -79,7 +79,7 @@ export class Trac101Page implements OnInit {
     this.portControl_amphur = this.formBuilder.control('', Validators.required);
     this.portControl_tambom = this.formBuilder.control('', Validators.required);
     this.ionicForm = this.formBuilder.group({
-      rubbermarket: ['สำนักงานตลาดยางพารา.....', [Validators.required]],
+      rubbermarket: ['', [Validators.required]],
       merchantname: ['', [Validators.required]],
       appno: [''],
       operatorname: ['', [Validators.required]],

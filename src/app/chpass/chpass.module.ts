@@ -1,20 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
-import { SysyearPageRoutingModule } from './sysyear-routing.module';
-
-import { SysyearPage } from './sysyear.page';
+import { ChpassPageRoutingModule } from './chpass-routing.module';
+import { ChpassPage } from './chpass.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SysyearPageRoutingModule,ReactiveFormsModule
+    ChpassPageRoutingModule,ReactiveFormsModule
   ],
-  declarations: [SysyearPage]
+  declarations: [ChpassPage]
 })
-export class SysyearPageModule {}
+export class ChpassPageModule {}
