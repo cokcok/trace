@@ -128,11 +128,13 @@ export class Trac102Page implements OnInit {
   }
 
 
-  async checklistForm(indexland,indexsell){
+  async checklistForm(indexland,indexsell,seller_id,land_id){
  
    
-    const item   = this.data[indexsell]['detail_land'][indexland];
-    // console.log(item);
+   // const item   = this.data[indexsell]['detail_land'][indexland];
+  // console.log(indexland,seller_id);
+   //console.log(this.data.filter((val) => val.seller_id == seller_id));
+    let  item = this.data.filter((val) => val.seller_id == seller_id)[0]['detail_land'][indexland];  
      const modal = await this.modalCtrl.create({
        component: Trac103Page,
        cssClass: 'my-modal',
@@ -149,10 +151,10 @@ export class Trac102Page implements OnInit {
       data['risk'] === 0 ? showtxt += '/ไม่ผ่าน EUDR' : showtxt += '/ผ่าน EUDR';
       data['selected_land'] === true ? showtxt += '/นำเข้า trace3': null;
       // item.text_status = 'ประเมินแล้ว/ผ่าน EUDR/นำเข้า trace3';
-      item.trac1_land_assessment_id = data['trac1_land_assessment_id'];
-      item.text_status = showtxt;
-      item.frist = 0 ;
-      //this.frist = 0;
+      item['trac1_land_assessment_id'] = data['trac1_land_assessment_id'];
+      item['text_status'] = showtxt;
+      item['frist'] = 0 ;
+
      }else if (role === 'cancel'){  
        //item['code'] = '555';
        //console.log(item['code'],item);
@@ -160,15 +162,16 @@ export class Trac102Page implements OnInit {
     
    }
 
-   async Adduser()
+   async Adduser(indexsell,type_sql,seller_id?)
    {
     let item = {
-      'type_sql' : 'AddUser',
+      'type_sql' : type_sql,
       'trac1_id' : this.trac1_id,
       'running' :  this.data.length+1,
+      'trac1_seller_id' : seller_id,
      
     }
-    // console.log(data);
+     //console.log(indexsell);
 
     const modal = await this.modalCtrl.create({
       component: Trac104Page,
@@ -178,30 +181,38 @@ export class Trac102Page implements OnInit {
     });
     await modal.present();
     const {data, role} = await modal.onWillDismiss();
-    console.log(data,role);
+    //console.log(data,role);
     if (role === 'submit'){        
         this.data.unshift(data.data_detail[0]);
-        //this.data.unshift(data.data_detail.map((item) => Object. assign({}, item)));
-        //this.data =  this.data.concat(data.data_detail.map((item) => Object. assign({}, item)));
+    }
+    else if(role === 'update'){
+      let  item = this.data.filter((val) => val.seller_id == seller_id);
+      item[0]['appno'] = data.data_detail[0]['appno'];
+      item[0]['replace_idc'] = data.data_detail[0]['replace_idc'];
+      item[0]['replace_name'] = data.data_detail[0]['replace_name'];
+      item[0]['detail_land'] =  item[0]['detail_land'].concat(data.data_detail[0]['detail_land'].map((item) => Object. assign({}, item)));
     }
 
    }
 
-   async reloadData(indexsell)
+   async reloadData(indexsell,seller_id)
    {
-    const item   = this.data[indexsell];
-    //const itemLand   = this.data[indexsell]['detail_land'];  
-   // console.log(this.data ,this.data[indexsell]['detail_land']);
+  
+     let  item = this.data.filter((val) => val.seller_id == seller_id);
+    //console.log(item,item[0]['seller_id']);
+ 
     let data = {
       'type_sql' : 'reloadData',
-      'seller_id' : item.seller_id,
-      'seller_idc' : item.seller_idc,
+      'seller_id' : item[0]['seller_id'],
+      'seller_idc' : item[0]['seller_idc'],
       'trac1_id' : this.trac1_id,
-      'seller_name' : item.seller_name ,
-      'running' : item.running,
+      'seller_name' : item[0]['seller_name']  ,
+      'running' :  item[0]['running'],
       'empid' : this.configSv.emp_id,
+      'replace_idc' : item[0]['replace_idc'] ,
+      'replace_name'	: item[0]['replace_name'] 	,
     }
-    this.data[indexsell]['detail_land'] = [];
+    item[0]['detail_land'] = [];
    //console.log(this.data);
     await this.loadingController.create({
       message: 'กำลังโหลดข้อมูล... กรุณารอสักครู่'
@@ -211,10 +222,12 @@ export class Trac102Page implements OnInit {
       this.sub = this.tracSv
       .trac1_reloadData(data)
       .subscribe((data) => {
+         
           //delete this.data[indexsell]['detail_land']
           //console.log(data.data_detail[0]['appno']);
-          this.data[indexsell]['appno'] = data.data_detail[0]['appno'];
-          this.data[indexsell]['detail_land'] =  this.data[indexsell]['detail_land'].concat(data.data_detail[0]['detail_land'].map((item) => Object. assign({}, item)));
+         
+          item[0]['appno'] = data.data_detail[0]['appno'];
+          item[0]['detail_land'] =  item[0]['detail_land'].concat(data.data_detail[0]['detail_land'].map((item) => Object. assign({}, item)));
           loading.dismiss();      
       });
       
@@ -223,21 +236,23 @@ export class Trac102Page implements OnInit {
 
    }
 
-   async  selectData(e,indexland,indexsell)
+   async  selectData(e,indexland,indexsell,seller_id,land_id)
   { 
-    const item   = this.data[indexsell]['detail_land'][indexland];
+    //const item   = this.data[indexsell]['detail_land'][indexland];
+    let  item = this.data.filter((val) => val.seller_id == seller_id)[0]['detail_land'][indexland]; 
     let selected_land;
     if(e.currentTarget.checked === false){
-      item.text_status =  item.text_status +  "/นำเข้า trace3";
+      //item[0]['id'] 
+      item['text_status'] =  item['text_status'] +  "/นำเข้า trace3";
       selected_land = 1;
     }else{
-      item.text_status =  item.tmp_text_status;
+      item['text_status']  =  item.tmp_text_status;
       selected_land = null;
     }
-    //console.log(item);
+
     let data = {
       'type_sql' : 'updateLand',
-      'trace1_land_id' : item.id,
+      'trace1_land_id' : item['id'],
       'selected_land' : selected_land
     }
 
@@ -325,4 +340,5 @@ export class Trac102Page implements OnInit {
       }, skipLocationChange:true
     });
   }
+
 }

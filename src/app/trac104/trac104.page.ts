@@ -15,7 +15,7 @@ export class Trac104Page implements OnInit {
   isSubmitted = false;
   constructor(public formBuilder: FormBuilder,private modalCtrl:ModalController,public navParams : NavParams,public configSv:ConfigService ,private loadingController: LoadingController,private tracSv: Trac1Service) { 
     this.item = this.navParams.get('data');
-    console.log(this.item);
+    //console.log(this.item);
   }
 
   ngOnInit() {
@@ -24,6 +24,7 @@ export class Trac104Page implements OnInit {
       running : this.item['running'],
       seller_idc : ['', [Validators.required]],
       seller_name : ['', [Validators.required]],
+      trac1_seller_id : this.item['trac1_seller_id'],
       type_sql : this.item['type_sql'],
       empid: [this.configSv.emp_id],
       year : [this.configSv.year],
@@ -60,8 +61,16 @@ export class Trac104Page implements OnInit {
                 
                 // this.data[indexsell]['appno'] = data.data_detail[0]['appno'];
                 // this.data[indexsell]['detail_land'] =  this.data[indexsell]['detail_land'].concat(data.data_detail[0]['detail_land'].map((item) => Object. assign({}, item)));
+               if(  this.ionicForm.controls["type_sql"].value === 'AddUser'  ) 
+               {
                 this.modalCtrl.dismiss(data, 'submit');
-                loading.dismiss();      
+               }
+               else if(this.ionicForm.controls["type_sql"].value === 'updateOwner')
+               {
+                this.modalCtrl.dismiss(data, 'update');
+               }
+                
+               loading.dismiss();      
       });
 
         }

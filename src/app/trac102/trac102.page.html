@@ -13,7 +13,7 @@
       <ion-button (click)="Printuser()">
         <ion-icon slot="icon-only" src="./assets/icons/print.svg"></ion-icon>
       </ion-button>
-      <ion-button *ngIf=" flg_open !== '0'" (click)="Adduser()">
+      <ion-button *ngIf=" flg_open !== '0'" (click)="Adduser(0,'AddUser')">
         <ion-icon slot="icon-only" src="./assets/icons/adduser.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -28,25 +28,27 @@
     <ion-card  *ngFor="let c of data | filter:filterTerm;let i = index; ">
 
       <ion-item  class="setcard">
-        <ion-row >
-        
+        <ion-row >        
           <ion-label >
             <ion-text color="primary">
               <h2>{{ c.appno }} {{ c.seller_name }} </h2>
             </ion-text >
-
             <ion-text >
               <h5> {{ c.seller_idc }}</h5>
             </ion-text >
-            
-           
+            <ion-text *ngIf="c.replace_idc != null">
+              <h5  color="tertiary">  ข้อมูลเจ้าของที่ดิน {{ c.appno }}  {{ c.replace_idc }}  {{ c.replace_name }} </h5>
+            </ion-text >
           </ion-label>
           
-         
         </ion-row>
+      
      
         <ion-buttons slot="end">
-          <ion-button *ngIf=" flg_open !== '0'"   (click)="reloadData(i)">
+          <ion-button *ngIf=" c.detail_land?.length === 0"   (click)="Adduser(i,'updateOwner',c.seller_id)">
+            <ion-icon slot="icon-only" src="./assets/icons/owner.svg"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf=" flg_open !== '0'"   (click)="reloadData(i,c.seller_id)">
             <ion-icon slot="icon-only" src="./assets/icons/reload.svg"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -61,17 +63,17 @@
               <ion-col class="aligncontent" size="auto" > 
                 
                 <ion-buttons *ngIf="(cc.gid != null && cc.land_status === '0')  && (cc.trac1_land_assessment_id === null ) && flg_open !== '0' "  >             
-                   <ion-button (click)="checklistForm(ii,i)">
+                   <ion-button (click)="checklistForm(ii,i,c.seller_id,cc.id)">
                      <ion-icon slot="icon-only" src="./assets/icons/checklist.svg"></ion-icon> 
                    </ion-button>
                  </ion-buttons> 
                  <ion-item *ngIf="cc.trac1_land_assessment_id !== null && cc.frist === null && flg_open !== '0' ">
-                  <ion-checkbox  (click)="selectData($event,ii,i)" color="dark" [(ngModel)]="cc.checked" > </ion-checkbox>
+                  <ion-checkbox  (click)="selectData($event,ii,i,c.seller_id,cc.id)" color="dark" [(ngModel)]="cc.checked" > </ion-checkbox>
                 </ion-item>
                 
                 <ion-buttons 
                 *ngIf="cc.trac1_land_assessment_id !== null && cc.frist === 0  "  >             
-                  <ion-button (click)="checklistForm(ii,i)">
+                  <ion-button (click)="checklistForm(ii,i,c.seller_id,cc.id)">
                     <ion-icon slot="icon-only" src="./assets/icons/checklist.svg"></ion-icon>
                   </ion-button>
                 </ion-buttons>
@@ -92,6 +94,7 @@
             <ion-row >
               <ion-col class="error">
                   ไม่พบข้อมูลขึ้นทะเบียนเกษตรกร/ไม่พบหลักฐานที่เป็นเอกสารสิทธิ์
+                 
               </ion-col>
             </ion-row>
           </div>
